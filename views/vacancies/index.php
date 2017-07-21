@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VacanciesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -51,33 +50,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                         <div class="related">
-
+                            
+                            
+                            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                            
                             <div class="relate-filter">Зарплата</div>
-
+                            
+                            <?php foreach ($salaryFilter as $filter): ?>
                             <div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B100%5D=1" data-salary="100">От 40 руб.</a>
-                                <span>14</span>
+                                <a href="<?= yii\helpers\Url::current(['salary_more_than' => $filter['value']]) ?>" data-salary="<?= $filter['value']; ?>"><?= $filter['title'] ?></a>
+                                <span><?= $filter['count'] ?></span>
                             </div>
-                            <div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B160%5D=1" data-salary="160">От 600 руб.</a>
-                                <span>13</span>
-                            </div>
-                            <div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B600%5D=1" data-salary="600">От 1200 руб.</a>
-                                <span>9</span>
-                            </div>
-                            <!--div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B900%5D=1" data-salary="900">От 900 руб.</a>
-                                <span>13</span>
-                            </div-->
-                            <div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B1500%5D=1" data-salary="1500">От 1 500 руб.</a>
-                                <span>6</span>
-                            </div>
-                            <div class="filter">
-                                <a href="?search%5Bsalary_fr_byr%5D%5B0%5D=1" data-salary="0">Не указана</a>
-                                <span>6</span>
-                            </div>
+                            <?php endforeach;?>
+                            
                             <div class="relate-filter">График работы</div>
 
                             <div class="filter">
@@ -95,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="relate-filter">Занятость</div>
 
                             <div class="filter">
-                                <a href="?search%5Boccupation%5D%5Bfull%5D=1">Полная</a>
+                                <a href="">Полная</a>
                                 <span>18</span>
                             </div>
                             <div class="filter">
@@ -178,22 +163,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
 
 
-                            <!--div class="filter">
-                            <a href="?search%5Bcity%5D%5B%D0%91%D1%80%D0%B5%D1%81%D1%82%5D=1">Брест</a>
-                            <span>1</span>
-                        </div-->
-
-
                             <div class="filter">
                                 <a href="?search%5Bcity%5D%5B%D0%9C%D0%BE%D0%B3%D0%B8%D0%BB%D0%B5%D0%B2%5D=1">Могилев</a>
                                 <span>1</span>
                             </div>
 
-
-                            <!--div class="filter">
-                            <a href="?search%5Bcity%5D%5B%D0%93%D1%80%D0%BE%D0%B4%D0%BD%D0%BE%5D=1">Гродно</a>
-                            <span>1</span>
-                        </div-->
 
 
                             <div class="filter">
@@ -221,25 +195,66 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div >
                             <div class="search-list__count">
                                 Найдено: 
-                                <span class="" style="font-size: 12px;font-style: italic;color: #7c7c7c;">20</span>
+                                <span class="" style="font-size: 12px;font-style: italic;color: #7c7c7c;"><?= $dataProvider->totalCount; ?></span>
                             </div>
                             <span class="sortable table-ajax-control no-scroll">
                                 <div class="search-list__sortable sortable-dropdown dropdown">
                                     Сортировать
                                     <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span>по дате обновления</span>
+                                        <span>
+                                            <?php 
+                                                if(isset($_GET['sort'])){
+                                                    switch ($_GET['sort']){
+                                                        case '-updated_at':
+                                                            echo 'по дате обновления';
+                                                            break;
+                                                        case 'salary':
+                                                            echo 'по возрастанию зарплаты';
+                                                            break;
+                                                        case '-salary':
+                                                            echo 'по убыванию зарплаты';
+                                                            break;
+                                                    }
+                                                }
+                                                else{
+                                                    echo 'по дате обновления';
+                                                }
+                                            ?>
+                                        </span>
                                         <i class="caret"></i>
                                     </span>
                                     <ul class="sortable-dropdown-menu dropdown-menu" role="menu">
-                                        <li class="checked">
-                                            <span>по дате обновления</span>
-                                        </li>
-                                        <li>
-                                            <a href="#">по возрастанию зарплаты</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">по убыванию зарплаты</a>
-                                        </li>
+                                        <?php if(!isset($_GET['sort']) || $_GET['sort'] == '-updated_at'): ?>
+                                            <li class="checked">
+                                                <span>по дате обновления</span>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => 'salary']) ?>">по возрастанию зарплаты</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => '-salary']) ?>">по убыванию зарплаты</a>
+                                            </li>
+                                        <?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'salary'): ?>
+                                            <li class="checked">
+                                                <span>по возрастанию зарплаты</span>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => '-updated_at']) ?>">по дате обновления</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => '-salary']) ?>">по убыванию зарплаты</a>
+                                            </li>
+                                        <?php elseif (isset($_GET['sort']) && $_GET['sort'] == '-salary'): ?>
+                                            <li class="checked">
+                                                <span>по убыванию зарплаты</span>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => '-updated_at']) ?>">по дате обновления</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?= yii\helpers\Url::current(['sort' => 'salary']) ?>">по возрастанию зарплаты</a>
+                                            </li>
+                                        <?php endif;?>
                                     </ul>
                                 </div>
                             </span>
@@ -251,77 +266,40 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="l_search-greed">
                     <div class="l_search-greed__column-3">
                         <span id="table-current-uri" data-current-uri="?"></span>
+                        
                         <!-- Vacancies -->
-                        <ul class="search-list">
-                            <?php foreach ($dataProvider->models as $vacancy):?>
-                            <li class="free vac-small">
-                                <div class="vac-small__column vac-small__column_1"></div>
-                                <div class="vac-small__column vac-small__column_2">
-                                    <div>
-                                        <a class="vac-small__title" href="#">Менеджер по продаже косметики</a>
-                                    </div>
+                        <?= \yii\widgets\ListView::widget([
+                            'dataProvider' => $dataProvider,
+                            'itemView' => '_list',
+                            'options' => [
+                                'class' => 'search-list',
+                            ],
+                            'layout' => '{items}<div class="table-ajax-control"><div class="pagination">{pager}{summary}</div></div>',
+                            'summary' => '<div class="pagination__count">Показано <span>1</span> – <span>{count}<span> из <span>{totalCount}<span></span></span></span></span></div>',
+                            'pager' => [
+                                'pageCssClass' => 'pagination__item',
+                                'activePageCssClass' => ['class' => 'pagination__item_active'],
+                                'disabledPageCssClass' => ['class' => 'pagination__item_current disabled'],
+                                'prevPageLabel' => '←',
+                                'firstPageLabel' => '<i class="icon-fast-bw"></i>',
+                                'nextPageLabel' => '→',
+                                'lastPageLabel' => '<i class="icon-fast-fw"></i>',
+                                'firstPageCssClass' => '',
+                                'lastPageCssClass' => '',
+                                'prevPageCssClass' => '',
+                                'nextPageCssClass' => '',
+                                'options' => [
+                                    'class' => 'pagination__list',
 
-                                    <div class="vac-small__salary">
-                                        <span class="salary-dotted">
-                                            700	руб.</span>
-                                    </div>
-
-                                    <div class="vac-small__experience">
-                                        <div class="vac-small__experience-item"><i class="icon-signal"></i>Опыт работы не имеет значения</div>
-                                        <div class="vac-small__experience-item"><i class="icon-graduation-cap"></i>Высшее образование</div>
-                                    </div>
-
-                                    <div class="vac-small__upd">
-                                        <a href="#">ООО «Глобал бизнес»</a>
-                                        <span  style="padding-left: 8px">|</span>
-                                        <div class="vac-small__city">
-                                            <i></i><span style="color:#4b4f54;">Минск</span>
-                                        </div>
-                                        <span style="padding-right: 8px">|</span>
-                                        <span class="nowrap">27 декабря 2016, 09:22</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <?php endforeach;?>
-                        </ul>
-                        <!-- endVacancies -->
-                        <!-- Navigation -->
-                        <div class="table-ajax-control">
-                            <div class="pagination">
-                                <ul class="pagination__list">
-                                    <li class="pagination__item disabled">
-                                        <span>
-                                            <i class="icon-fast-bw"></i>
-                                        </span>
-                                    </li>
-                                    <li class="pagination__item pagination__item_current disabled">
-                                        <span>←</span>
-                                    </li>
-                                    <li class="pagination__item pagination__item_active">
-                                        <span>1</span>
-                                    </li>
-                                    <li class="pagination__item">
-                                        <a href="?page=2">2</a>
-                                    </li>
-                                    <li class="pagination__item">
-                                        <a href="?page=2">→</a>
-                                    </li>
-                                    <li class="pagination__item">
-                                        <a href="?page=2">
-                                            <i class="icon-fast-fw"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                                
-                                <div class="pagination__count">Показано <span>1</span> – <span>30<span> из <span>31<span></span></span></span></span></div>
-                            </div>
-                        </div>
-                         <!-- endNavigation -->
+                                ], 
+                            ]
+                        ]); ?>
+                        <!-- end Vacancies -->
+                        
                     </div>
-                    
                     <div style="display: table-cell; width:29.5%;"><img src="../img/22284.jpg" alt="" style="width: 87%;"></div>
-                    
                 </div>
+                
             </div>
         </div>      
     </div>    

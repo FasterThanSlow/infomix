@@ -10,6 +10,7 @@ $baseUrl = str_replace('/web', '', (new Request)->getBaseUrl());
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -23,6 +24,14 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+        ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'dateFormat' => 'php:d MMMM yyyy, H:i',
+            'datetimeFormat' => 'php:d F Y, H:i',
+            'timeFormat' => 'php:H:i:s',
+            'defaultTimeZone' => 'Europe/Minsk',
+            'locale' => 'ru-RU'
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
