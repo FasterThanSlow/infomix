@@ -8,6 +8,7 @@ use app\models\VacanciesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\SpecialitiesSection;
 
 /**
  * VacanciesController implements the CRUD actions for Vacancies model.
@@ -37,47 +38,26 @@ class VacanciesController extends Controller
     {
         $searchModel = new VacanciesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $query = clone $dataProvider->query;
-        
-        $salaries = [
-            [ 'title' => 'От 400 руб.', 'value' => '400'],
-            [ 'title' => 'От 500 руб.', 'value' => '500'],
-            [ 'title' => 'От 600 руб.', 'value' => '600'],
-            [ 'title' => 'От 800 руб.', 'value' => '800'],
-            [ 'title' => 'От 1000 руб.', 'value' => '1000'],
-            [ 'title' => 'Не указана', 'value' => 'null'],
-        ];
-        
-        
-        $salaryFilter = [];
-        
-        foreach ($salaries as $salary){
-            if($salary['value'] == 'null'){
-                $count = $query->select(['COUNT(*) AS count'])->where(['is','salary', NULL ])->asArray()->count();
-            }
-            else{
-                $count = $query->select(['COUNT(*) AS count'])->where(['>=','salary', $salary['value'] ])->asArray()->count();
-            }
-            
-            if($count != 0){
-                $salaryFilter[] = [
-                    'title' => $salary['title'], 
-                    'value' => $salary['value'], 
-                    'count' => $count
-                ];
-            }
-            
-        }
-              
-        
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'salaryFilter' => $salaryFilter
         ]);
     }
 
+    public function actionSpecialities()
+    {
+        
+    }
     
+    public function actionSpecialitiesSection()
+    {
+        $specialitiesSections = SpecialitiesSection::find()->with('specialitiesSubsections')->asArray()->all();
+        
+        return $this->render('specialities_sections', [
+            'specialitiesSections' => $specialitiesSections,
+        ]);
+    }
     /**
      * Displays a single Vacancies model.
      * @param string $id
