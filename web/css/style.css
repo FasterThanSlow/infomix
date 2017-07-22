@@ -707,6 +707,7 @@ input {
     font-size: 12px;
     font-style: italic;
     color: #7c7c7c;
+    margin-left: 4px;
 }
 
 .search_greed_col2 {
@@ -2252,7 +2253,7 @@ div.filter label{
     line-height: 1.42857143;
     font-weight: normal;
     cursor: pointer;
-    display: block;
+    display: inline;
     margin-bottom: 0px;
 }
 

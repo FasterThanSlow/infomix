@@ -8,6 +8,12 @@ use app\models\VacanciesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use app\models\Schedule;
+use app\models\Education;
+use app\models\Employment;
+use app\models\NatureOfWork;
+use app\models\Expiriencies;
 
 /**
  * VacanciesController implements the CRUD actions for Vacancies model.
@@ -37,47 +43,61 @@ class VacanciesController extends Controller
     {
         $searchModel = new VacanciesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $query = clone $dataProvider->query;
         
-        $salaries = [
-            [ 'title' => 'От 400 руб.', 'value' => '400'],
-            [ 'title' => 'От 500 руб.', 'value' => '500'],
-            [ 'title' => 'От 600 руб.', 'value' => '600'],
-            [ 'title' => 'От 800 руб.', 'value' => '800'],
-            [ 'title' => 'От 1000 руб.', 'value' => '1000'],
-            [ 'title' => 'Не указана', 'value' => 'null'],
+        $salariesArr = [
+            300 => 'От 300 руб.',
+            500 => 'От 500 руб.',
+            700 => 'От 700 руб.',
+            1200 => 'От 1200 руб.',
+            'null' => 'Не указана',
         ];
         
+        $salaries = [];
         
-        $salaryFilter = [];
-        
-        foreach ($salaries as $salary){
-            if($salary['value'] == 'null'){
-                $count = $query->select(['COUNT(*) AS count'])->where(['is','salary', NULL ])->asArray()->count();
+        foreach ($salariesArr as $index => $item){
+            if($index == 'null'){
+                $count = Vacancies::find()->where(['is','salary', NULL ])->asArray()->count();
             }
             else{
-                $count = $query->select(['COUNT(*) AS count'])->where(['>=','salary', $salary['value'] ])->asArray()->count();
+                $count = Vacancies::find()->where(['>=','salary', $index ])->asArray()->count();
             }
             
             if($count != 0){
-                $salaryFilter[] = [
-                    'title' => $salary['title'], 
-                    'value' => $salary['value'], 
+                $salaries[] = [
+                    'title' => $item, 
+                    'id' => $index, 
                     'count' => $count
                 ];
             }
             
+            
         }
-              
+        
+        $schedule = Schedule::find()->select(['schedule.id','schedule.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('schedule.id')->asArray()->all();
+        $education = Education::find()->select(['education.id','education.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('education.id')->asArray()->all();
+        $employment = Employment::find()->select(['employment.id','employment.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('employment.id')->asArray()->all();
+        $natureOfWork  = NatureOfWork::find()->select(['nature_of_work.id','nature_of_work.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('nature_of_work.id')->asArray()->all();
+        $expiriencies  = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
+        $student = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
         
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'salaryFilter' => $salaryFilter
+            'schedule' => $schedule,
+            'education' => $education,
+            'employment' => $employment,
+            'natureOfWork' => $natureOfWork,
+            'expiriencies' => $expiriencies,
+            'student' => $student,
+            'salaries' => $salaries
         ]);
     }
 
-    
+    public function actionSpecialitiesSection(){
+       
+    }
+
+
     /**
      * Displays a single Vacancies model.
      * @param string $id

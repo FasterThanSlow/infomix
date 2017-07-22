@@ -59,7 +59,16 @@ $datesArray = [
                         
                         <!-- Filter -->
                         <div class="related">
-                            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+                            <?php echo $this->render('_search', [
+                                'model' => $searchModel,
+                                'schedule' => $schedule,
+                                'education' => $education,
+                                'employment' => $employment,
+                                'natureOfWork' => $natureOfWork,
+                                'expiriencies' => $expiriencies,
+                                'student' => $student,
+                                'salaries' => $salaries
+                            ]); ?>
                         </div>
                         <!-- end Filter -->
                         
