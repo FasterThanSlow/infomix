@@ -2243,5 +2243,47 @@ label .text {
 .tableJob{
     width: 600px;
     background: #E7EFF9;
-};
+}
 
+div.filter label{
+    color: #4b4f54;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    font-weight: normal;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 0px;
+}
+
+div.filter label input{
+    display: none;
+}
+
+div.filter label:hover{
+    text-decoration: underline;
+}
+
+div.catalogue-container{
+    display: flex;
+}
+
+ul.catalogue{
+    list-style: none;
+    padding: 0;
+    margin: 0 40px 0 0;
+    width: 50%;
+}
+
+.catalogue__section-title{
+    margin-top: 0;
+    margin-bottom: 5px; 
+}
+
+li.catalogue__section{
+    padding-bottom: 20px;
+}
+
+h1.no-margin-top{
+    margin: 40px 0 25px
+}

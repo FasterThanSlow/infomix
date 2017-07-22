@@ -6,51 +6,56 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\VacanciesSearch */
 /* @var $form yii\widgets\ActiveForm */
+
+$salaries = [
+    300 => 'От 300 руб.',
+    500 => 'От 500 руб.',
+    700 => 'От 700 руб.',
+    1200 => 'От 1200 руб.',
+    'null' => 'Не указана',
+];
+
 ?>
 
 <div class="vacancies-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
         'method' => 'get',
     ]); ?>
     
+    <div class="relate-filter">Зарплата</div>
+    <div class="filter">
+        <?= $form->field($model, 'salaries')->radioList($salaries)->label(false) ?>
+    </div>
     
-    <?= $form->field($model, 'schedules.id')->listBox(yii\helpers\ArrayHelper::map(app\models\Schedule::find()->asArray()->all(),'id', 'title'))?>
-
-    <?= $form->field($model, 'title') ?>
-
-    <?= $form->field($model, 'salary') ?>
-
-    <?= $form->field($model, 'is_for_student') ?>
-
-    <?= $form->field($model, 'description') ?>
-
-    <?php // echo $form->field($model, 'is_responseble') ?>
-
-    <?php // echo $form->field($model, 'is_contactable') ?>
-
-    <?php // echo $form->field($model, 'contact_person') ?>
-
-    <?php // echo $form->field($model, 'views') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <?php // echo $form->field($model, 'expiriencies_id') ?>
-
-    <?php // echo $form->field($model, 'education_id') ?>
-
-    <?php // echo $form->field($model, 'organizations_id') ?>
-
-    <?php // echo $form->field($model, 'statuses_id') ?>
-
-    <?php // echo $form->field($model, 'members_id') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="relate-filter">График работы</div>
+    <div class="filter">
+        <?= $form->field($model, 'schedules')->radioList(yii\helpers\ArrayHelper::map(app\models\Schedule::find()->asArray()->all(),'id', 'title'))->label(false) ?>
+    </div>
+    
+    <div class="relate-filter">Занятость</div>
+    <div class="filter">
+        <?= $form->field($model, 'employments')->radioList(yii\helpers\ArrayHelper::map(app\models\Employment::find()->asArray()->all(),'id', 'title'))->label(false) ?>
+    </div>
+    
+    <div class="relate-filter">Характер работы</div>
+    <div class="filter">
+        <?= $form->field($model, 'natureOfWorks')->radioList(yii\helpers\ArrayHelper::map(app\models\NatureOfWork::find()->asArray()->all(),'id', 'title'))->label(false) ?>
+    </div>
+    
+    <div class="relate-filter">Уровень образования</div>
+    <div class="filter">
+        <?= $form->field($model, 'educations')->radioList(yii\helpers\ArrayHelper::map(app\models\Education::find()->asArray()->all(),'id', 'title'))->label(false) ?>
+    </div>
+    
+    <div class="relate-filter">Опыт работы</div>
+    <div class="filter">
+        <?= $form->field($model, 'expiriencies')->radioList(yii\helpers\ArrayHelper::map(app\models\Expiriencies::find()->asArray()->all(),'id', 'title'))->label(false) ?>
+    </div>
+    
+    <div class="relate-filter">Студент</div>
+    <div class="filter">
+        <?= $form->field($model, 'is_for_student')->radioList(['0' => 'Нет', '1' => 'Можно'])->label(false) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

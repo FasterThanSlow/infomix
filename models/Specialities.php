@@ -11,6 +11,8 @@ use Yii;
  * @property string $title
  * @property string $parent_id
  *
+ * @property SpecialitiesSubsectionHasSpecialities[] $specialitiesSubsectionHasSpecialities
+ * @property SpecialitiesSubsection[] $specialitiesSubsections
  * @property SummaryHasSpecialities[] $summaryHasSpecialities
  * @property Summary[] $summaries
  * @property VacanciesHasSpecialities[] $vacanciesHasSpecialities
@@ -47,6 +49,22 @@ class Specialities extends \yii\db\ActiveRecord
             'title' => 'Title',
             'parent_id' => 'Parent ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpecialitiesSubsectionHasSpecialities()
+    {
+        return $this->hasMany(SpecialitiesSubsectionHasSpecialities::className(), ['specialities_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSpecialitiesSubsections()
+    {
+        return $this->hasMany(SpecialitiesSubsection::className(), ['id' => 'specialities_subsection_id'])->viaTable('specialities_subsection_has_specialities', ['specialities_id' => 'id']);
     }
 
     /**

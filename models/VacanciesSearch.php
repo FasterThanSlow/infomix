@@ -12,6 +12,15 @@ use app\models\Vacancies;
  */
 class VacanciesSearch extends Vacancies
 {
+    public $schedules;
+    public $employments;
+    public $natureOfWorks;
+    public $educations;
+    public $expiriencies;
+    public $salaries;
+    public $period;
+
+
     /**
      * @inheritdoc
      */
@@ -19,7 +28,7 @@ class VacanciesSearch extends Vacancies
     {
         return [
             [['id', 'is_for_student', 'is_responseble', 'is_contactable', 'views', 'created_at', 'updated_at', 'expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id'], 'integer'],
-            [['title', 'description', 'contact_person'], 'safe'],
+            [['title', 'description', 'contact_person', 'schedules', 'employments','natureOfWorks','educations','expiriencies','salaries','period'], 'safe'],
             [['salary'], 'number'],
         ];
     }
@@ -43,7 +52,14 @@ class VacanciesSearch extends Vacancies
     public function search($params)
     {
         $query = Vacancies::find();
-
+        
+        $query->joinWith('schedules');
+        $query->joinWith('employments');
+        $query->joinWith('natureOfWorks');
+        $query->joinWith('education');
+        $query->joinWith('expiriencies');
+       
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -61,7 +77,7 @@ class VacanciesSearch extends Vacancies
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -77,20 +93,30 @@ class VacanciesSearch extends Vacancies
             'organizations_id' => $this->organizations_id,
             'statuses_id' => $this->statuses_id,
             'members_id' => $this->members_id,
+            'schedule.id' => $this->schedules,
+            'employment.id' => $this->employments,
+            'nature_of_work.id' => $this->natureOfWorks,
+            'education.id' => $this->educations,
+            'expiriencies.id' => $this->expiriencies,
         ]);
         
-        if(isset($_GET['salary_more_than'])){
-            $salary = $_GET['salary_more_than'];
-            switch ($salary){
+        if(!empty($this->period)){
+            if($this->period != 0){
+                $query->andFilterWhere(['>=', 'updated_at',time() - $this->period]);
+            }
+        }
+        
+        if(!empty($this->salaries)){
+            switch ($this->salaries){
                 case 'null':
                     $query->andWhere(['salary' => null]);
                     break;
                 default :
-                    $query->andWhere(['>=' , 'salary' ,$salary]);
+                    $query->andFilterWhere(['>=' , 'salary' ,$this->salaries]);
                     break;
             }
-            
         }
+        
      
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
