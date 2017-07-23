@@ -14,6 +14,7 @@ use app\models\Education;
 use app\models\Employment;
 use app\models\NatureOfWork;
 use app\models\Expiriencies;
+use app\models\SpecialitiesSection;
 
 /**
  * VacanciesController implements the CRUD actions for Vacancies model.
@@ -39,10 +40,14 @@ class VacanciesController extends Controller
      * Lists all Vacancies models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($speciality)
     {
         $searchModel = new VacanciesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $specialitiesSubsections = \app\models\SpecialitiesSubsection::find()->joinWith('specialities',false)->joinWith('specialitiesSection')->where(['specialities.id' => $speciality])->asArray()->all();
+        $speciality = \app\models\Specialities::findOne(['id'=>$speciality]);
+        
         
         $salariesArr = [
             300 => 'От 300 руб.',
@@ -80,24 +85,38 @@ class VacanciesController extends Controller
         $expiriencies  = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
         $student = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
         
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'schedule' => $schedule,
-            'education' => $education,
-            'employment' => $employment,
-            'natureOfWork' => $natureOfWork,
-            'expiriencies' => $expiriencies,
-            'student' => $student,
-            'salaries' => $salaries
-        ]);
+        return $this->render('index', compact([
+            'searchModel',
+            'dataProvider',
+            'schedule',
+            'education',
+            'employment',
+            'natureOfWork',
+            'expiriencies',
+            'student',
+            'salaries',
+            'speciality',
+            'specialitiesSubsections']));          
     }
 
     public function actionSpecialitiesSection(){
+       $specialitiesSections = SpecialitiesSection::find()->joinWith('specialitiesSubsections')->asArray()->all();
        
+       return $this->render('specialities_sections',[
+           'specialitiesSections' => $specialitiesSections
+       ]);
     }
 
-
+    public function actionSpecialities($section){
+       $specialitySection = \app\models\SpecialitiesSubsection::findOne($section);
+       
+       $specialities = \app\models\Specialities::find()->joinWith('specialitiesSubsections')->where(['specialities_subsection.id'=>$section])->asArray()->all();
+       return $this->render('specialities',[
+           'section' => $specialitySection,
+           'specialities' => $specialities
+       ]);
+    }
+    
     /**
      * Displays a single Vacancies model.
      * @param string $id
