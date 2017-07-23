@@ -19,6 +19,7 @@ class VacanciesSearch extends Vacancies
     public $expiriencies;
     public $salaries;
     public $period;
+    public $speciality;
 
 
     /**
@@ -28,7 +29,7 @@ class VacanciesSearch extends Vacancies
     {
         return [
             [['id', 'is_for_student', 'is_responseble', 'is_contactable', 'views', 'created_at', 'updated_at', 'expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id'], 'integer'],
-            [['title', 'description', 'contact_person', 'schedules', 'employments','natureOfWorks','educations','expiriencies','salaries','period'], 'safe'],
+            [['title', 'description', 'contact_person', 'schedules', 'employments','natureOfWorks','educations','expiriencies','salaries','period','speciality'], 'safe'],
             [['salary'], 'number'],
         ];
     }
@@ -58,7 +59,7 @@ class VacanciesSearch extends Vacancies
         $query->joinWith('natureOfWorks');
         $query->joinWith('education');
         $query->joinWith('expiriencies');
-       
+        $query->joinWith('specialities');
         
         // add conditions that should always apply here
 
@@ -98,6 +99,7 @@ class VacanciesSearch extends Vacancies
             'nature_of_work.id' => $this->natureOfWorks,
             'education.id' => $this->educations,
             'expiriencies.id' => $this->expiriencies,
+            'specialities.id' => $this->speciality
         ]);
         
         if(!empty($this->period)){

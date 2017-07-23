@@ -50,4 +50,5 @@ class SpecialitiesSection extends \yii\db\ActiveRecord
     {
         return $this->hasMany(SpecialitiesSubsection::className(), ['specialities_section_id' => 'id']);
     }
+    
 }

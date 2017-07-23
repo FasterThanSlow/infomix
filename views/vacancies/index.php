@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VacanciesSearch */
@@ -78,12 +79,14 @@ $datesArray = [
             <div class="search_greed_col2">
                 <div style="display: block">
                     <div class="head_catalog">    
-                        <h2 style="margin-top: 0; margin-bottom: 20px;">Программист PHP</h2>
-                        <a href="#" >Каталог вакансий</a>
+                        <h2 style="margin-top: 0; margin-bottom: 20px;"><?= $speciality->title ?></h2>
+                        <a href="<?= yii\helpers\Url::toRoute('vacancies/specialities-section'); ?>" >Каталог вакансий</a>
+                        <?php foreach ($specialitiesSubsections as $subSection):?>
                         <p style="margin: 15px 0 15px 0">
-                            <span>→ IT / Интернет / Телеком</span> → 
-                            <a href="#">IT, Интернет, телеком</a>
+                            <span>→ <?= $subSection['specialitiesSection']['title']; ?></span> → 
+                            <a href="<?= Url::toRoute(['vacancies/specialities','section' => $subSection['id']]); ?>"><?= $subSection['title']; ?></a>
                         </p>
+                        <?php endforeach;?>
                         <div >
                             <div class="search-list__count">
                                 Найдено: 
