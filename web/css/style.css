@@ -2288,3 +2288,19 @@ li.catalogue__section{
 h1.no-margin-top{
     margin: 40px 0 25px
 }
+
+.catalogue__item__count{
+    font-size: 12px;
+    font-style: italic;
+    color: #7c7c7c;
+    margin-left: 4px;
+}
+
+.radio-filter-active{
+    font-weight: bold;
+    font-color:#000;
+}
+
+.filter-title{
+    display: inline;
+}

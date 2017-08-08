@@ -81,19 +81,19 @@ class VacanciesSearch extends Vacancies
         
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'salary' => $this->salary,
-            'is_for_student' => $this->is_for_student,
-            'is_responseble' => $this->is_responseble,
-            'is_contactable' => $this->is_contactable,
-            'views' => $this->views,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'expiriencies_id' => $this->expiriencies_id,
-            'education_id' => $this->education_id,
-            'organizations_id' => $this->organizations_id,
-            'statuses_id' => $this->statuses_id,
-            'members_id' => $this->members_id,
+            'vacancies.id' => $this->id,
+            'vacancies.salary' => $this->salary,
+            'vacancies.is_for_student' => $this->is_for_student,
+            'vacancies.is_responseble' => $this->is_responseble,
+            'vacancies.is_contactable' => $this->is_contactable,
+            'vacancies.views' => $this->views,
+            'vacancies.created_at' => $this->created_at,
+            'vacancies.updated_at' => $this->updated_at,
+            'vacancies.expiriencies_id' => $this->expiriencies_id,
+            'vacancies.education_id' => $this->education_id,
+            'vacancies.organizations_id' => $this->organizations_id,
+            'vacancies.statuses_id' => $this->statuses_id,
+            'vacancies.members_id' => $this->members_id,
             'schedule.id' => $this->schedules,
             'employment.id' => $this->employments,
             'nature_of_work.id' => $this->natureOfWorks,
@@ -104,25 +104,25 @@ class VacanciesSearch extends Vacancies
         
         if(!empty($this->period)){
             if($this->period != 0){
-                $query->andFilterWhere(['>=', 'updated_at',time() - $this->period]);
+                $query->andFilterWhere(['>=', 'vacancies.updated_at',time() - $this->period]);
             }
         }
         
         if(!empty($this->salaries)){
             switch ($this->salaries){
                 case 'null':
-                    $query->andWhere(['salary' => null]);
+                    $query->andFilterWhere(['vacancies.salary' => null]);
                     break;
                 default :
-                    $query->andFilterWhere(['>=' , 'salary' ,$this->salaries]);
+                    $query->andFilterWhere(['>=' , 'vacancies.salary' ,$this->salaries]);
                     break;
             }
         }
         
      
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'contact_person', $this->contact_person]);
+        $query->andFilterWhere(['like', 'vacancies.title', $this->title])
+            ->andFilterWhere(['like', 'vacancies.description', $this->description])
+            ->andFilterWhere(['like', 'vacancies.contact_person', $this->contact_person]);
 
         return $dataProvider;
     }

@@ -14,7 +14,7 @@ use yii\helpers\Url;
     'item' => function($item, $index) {
         return Html::tag(
             'li',
-            Html::a($item['title'], Url::toRoute(['vacancies/specialities','section' => $item['id']])),
+            Html::a($item['title'], Url::toRoute(['vacancies/specialities','section' => $item['id']])).'<span class="catalogue__item__count">'.$item['count'].'</span>',
             ['class' => 'catalogue__item']
         );
     },

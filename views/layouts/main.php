@@ -220,9 +220,11 @@ AppAsset::register($this);
                 <?php echo Nav::widget([
                     'options' => ['class' => 'menu'],
                     'items' => [
-                        ['label' => 'Home', 'url' => ['/site/index']],
-                        ['label' => 'About', 'url' => ['/site/about']],
-                        ['label' => 'Contact', 'url' => ['/site/contact']],
+                        ['label' => 'Главная', 'url' => ['/site/index']],
+                        ['label' => 'Резюме(admin)', 'url' => ['/summary/index']],
+                        ['label' => 'Организации(admin)', 'url' => ['/organizations/index']],
+                        ['label' => 'Вакансии(admin)', 'url' => ['/vacancies2/index']],
+                        ['label' => 'Пользователи(admin)', 'url' => ['/user/index']],
                         ['label' => 'Вакансии', 'url' => ['/vacancies/specialities-section']],
                     ],
                 ]); ?>

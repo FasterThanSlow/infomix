@@ -28,6 +28,7 @@ class AppAsset extends AssetBundle
         'css/materialdesignicons.css',
         'css/materialdesignicons.min.css',
         'css/style.css',
+        'font-awesome/css/font-awesome.min.css',
     ];
     public $js = [
         'js/script.js',

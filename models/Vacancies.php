@@ -23,9 +23,11 @@ use Yii;
  * @property string $organizations_id
  * @property string $statuses_id
  * @property string $members_id
+ * @property string $cities_id
  *
  * @property FavoritesVacancies[] $favoritesVacancies
  * @property Responces[] $responces
+ * @property Cities $cities
  * @property Education $education
  * @property Expiriencies $expiriencies
  * @property Members $members
@@ -60,10 +62,11 @@ class Vacancies extends \yii\db\ActiveRecord
     {
         return [
             [['salary'], 'number'],
-            [['is_for_student', 'is_responseble', 'is_contactable', 'views', 'created_at', 'updated_at', 'expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id'], 'integer'],
+            [['is_for_student', 'is_responseble', 'is_contactable', 'views', 'created_at', 'updated_at', 'expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id', 'cities_id'], 'integer'],
             [['description'], 'string'],
-            [['expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id'], 'required'],
+            [['expiriencies_id', 'education_id', 'organizations_id', 'statuses_id', 'members_id', 'cities_id'], 'required'],
             [['title', 'contact_person'], 'string', 'max' => 255],
+            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['education_id'], 'exist', 'skipOnError' => true, 'targetClass' => Education::className(), 'targetAttribute' => ['education_id' => 'id']],
             [['expiriencies_id'], 'exist', 'skipOnError' => true, 'targetClass' => Expiriencies::className(), 'targetAttribute' => ['expiriencies_id' => 'id']],
             [['members_id'], 'exist', 'skipOnError' => true, 'targetClass' => Members::className(), 'targetAttribute' => ['members_id' => 'id']],
@@ -94,6 +97,7 @@ class Vacancies extends \yii\db\ActiveRecord
             'organizations_id' => 'Organizations ID',
             'statuses_id' => 'Statuses ID',
             'members_id' => 'Members ID',
+            'cities_id' => 'Cities ID',
         ];
     }
 
@@ -111,6 +115,14 @@ class Vacancies extends \yii\db\ActiveRecord
     public function getResponces()
     {
         return $this->hasMany(Responces::className(), ['vacancies_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'cities_id']);
     }
 
     /**
@@ -167,6 +179,11 @@ class Vacancies extends \yii\db\ActiveRecord
     public function getContacts()
     {
         return $this->hasMany(Contacts::className(), ['id' => 'contacts_id'])->viaTable('vacancies_has_contacts', ['vacancies_id' => 'id']);
+    }
+
+    public function getAddresses()
+    {
+        return $this->hasMany(Addresses::className(), ['id' => 'addresses_id'])->viaTable('vacancies_has_addresses', ['vacancies_id' => 'id']);
     }
 
     /**

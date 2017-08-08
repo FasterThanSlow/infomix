@@ -93,6 +93,10 @@ class Addresses extends \yii\db\ActiveRecord
         return $this->hasMany(Organizations::className(), ['id' => 'organizations_id'])->viaTable('organizations_has_addresses', ['addresses_id' => 'id']);
     }
 
+    public function getVacancies()
+    {
+        return $this->hasMany(Vacancies::className(), ['id' => 'vacancies_id'])->viaTable('vacancies_has_addresses', ['addresses_id' => 'id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -73,4 +73,5 @@ class SpecialitiesSubsection extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Specialities::className(), ['id' => 'specialities_id'])->viaTable('specialities_subsection_has_specialities', ['specialities_subsection_id' => 'id']);
     }
+    
 }

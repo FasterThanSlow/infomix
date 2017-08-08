@@ -20,12 +20,11 @@ $datesArray = [
     7889229 => 'за 3 месяца',
     15778458 => 'за полгода'
 ];
-    if( $searchModel->period != '' ){
-        $period = $searchModel->period;
-    }
-    else{
-        $period = 0;
-    }
+if ($searchModel->period != '') {
+    $period = $searchModel->period;
+} else {
+    $period = 0;
+}
 ?>
 <div class="vak_catalog">
     <div class="inner_wrapp">
@@ -39,28 +38,29 @@ $datesArray = [
                                 <button class="btn btn-default dropdown-toggle js-upped-period-dropdown-btn" type="button" id="filter-bar-upped-period-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 80%; text-align: left;">
                                     <?= $datesArray[$period] ?> <span class="caret" style="float: right; margin-top: 8px;"></span>
                                 </button>
-                                
-                                <?= Html::ul($datesArray,[
+
+                                <?=
+                                Html::ul($datesArray, [
                                     'class' => 'dropdown-menu',
                                     'aria-labelledby' => 'filter-bar-upped-period-dropdown',
-                                    'item' => function($item,$index){
-                                        return Html::tag('li', 
-                                            Html::a($item, yii\helpers\Url::current(['VacanciesSearch[period]' => $index])),
-                                            [
-                                                'class'=>'js-upped-period-filter-link'
-                                            ]);
+                                    'item' => function($item, $index) {
+                                        return Html::tag('li', Html::a($item, yii\helpers\Url::current(['VacanciesSearch[period]' => $index])), [
+                                                    'class' => 'js-upped-period-filter-link'
+                                        ]);
                                     }
-                                ])?>
+                                ])
+                                ?>
                             </div>
 
 
                         </div>
                     </div>
                     <div class="select_widjet">
-                        
+
                         <!-- Filter -->
                         <div class="related">
-                            <?php echo $this->render('_search', [
+                            <?php
+                            echo $this->render('_search', [
                                 'model' => $searchModel,
                                 'schedule' => $schedule,
                                 'education' => $education,
@@ -68,11 +68,13 @@ $datesArray = [
                                 'natureOfWork' => $natureOfWork,
                                 'expiriencies' => $expiriencies,
                                 'student' => $student,
-                                'salaries' => $salaries
-                            ]); ?>
+                                'salaries' => $salaries,
+                                'speciality' => $speciality
+                            ]);
+                            ?>
                         </div>
                         <!-- end Filter -->
-                        
+
                     </div>
                 </div>
             </div>
@@ -81,13 +83,13 @@ $datesArray = [
                     <div class="head_catalog">    
                         <h2 style="margin-top: 0; margin-bottom: 20px;"><?= $speciality->title ?></h2>
                         <a href="<?= yii\helpers\Url::toRoute('vacancies/specialities-section'); ?>" >Каталог вакансий</a>
-                        <?php foreach ($specialitiesSubsections as $subSection):?>
-                        <p style="margin: 15px 0 15px 0">
-                            <span>→ <?= $subSection['specialitiesSection']['title']; ?></span> → 
-                            <a href="<?= Url::toRoute(['vacancies/specialities','section' => $subSection['id']]); ?>"><?= $subSection['title']; ?></a>
-                        </p>
-                        <?php endforeach;?>
-                        <div >
+<?php foreach ($specialitiesSubsections as $subSection): ?>
+                            <p style="margin: 15px 0 15px 0">
+                                <span>→ <?= $subSection['specialitiesSection']['title']; ?></span> → 
+                                <a href="<?= Url::toRoute(['vacancies/specialities', 'section' => $subSection['id']]); ?>"><?= $subSection['title']; ?></a>
+                            </p>
+<?php endforeach; ?>
+                        <div>
                             <div class="search-list__count">
                                 Найдено: 
                                 <span class="" style="font-size: 12px;font-style: italic;color: #7c7c7c;"><?= $dataProvider->totalCount; ?></span>
@@ -118,7 +120,7 @@ $datesArray = [
                                         <i class="caret"></i>
                                     </span>
                                     <ul class="sortable-dropdown-menu dropdown-menu" role="menu">
-                                        <?php if (!isset($_GET['sort']) || $_GET['sort'] == '-updated_at'): ?>
+<?php if (!isset($_GET['sort']) || $_GET['sort'] == '-updated_at'): ?>
                                             <li class="checked">
                                                 <span>по дате обновления</span>
                                             </li>
@@ -128,7 +130,7 @@ $datesArray = [
                                             <li>
                                                 <a href="<?= yii\helpers\Url::current(['sort' => '-salary']) ?>">по убыванию зарплаты</a>
                                             </li>
-                                        <?php elseif (isset($_GET['sort']) && $_GET['sort'] == 'salary'): ?>
+<?php elseif (isset($_GET['sort']) && $_GET['sort'] == 'salary'): ?>
                                             <li class="checked">
                                                 <span>по возрастанию зарплаты</span>
                                             </li>
@@ -138,7 +140,7 @@ $datesArray = [
                                             <li>
                                                 <a href="<?= yii\helpers\Url::current(['sort' => '-salary']) ?>">по убыванию зарплаты</a>
                                             </li>
-                                        <?php elseif (isset($_GET['sort']) && $_GET['sort'] == '-salary'): ?>
+<?php elseif (isset($_GET['sort']) && $_GET['sort'] == '-salary'): ?>
                                             <li class="checked">
                                                 <span>по убыванию зарплаты</span>
                                             </li>
@@ -148,11 +150,15 @@ $datesArray = [
                                             <li>
                                                 <a href="<?= yii\helpers\Url::current(['sort' => 'salary']) ?>">по возрастанию зарплаты</a>
                                             </li>
-                                        <?php endif; ?>
+<?php endif; ?>
                                     </ul>
                                 </div>
                             </span>
+                            <div class="pull-right">
+                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map','speciality' => $speciality->id]) ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
+                            </div>
                         </div>
+                       
                         <div class="search-list__top-separator"></div>
                     </div>
                 </div>

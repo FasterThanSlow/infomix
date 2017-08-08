@@ -32,7 +32,7 @@ $specialitiesLeftSide = array_slice($specialities, count($specialities) / 2 , ce
                         'item' => function($item, $index) {
                             return Html::tag(
                                 'li',
-                                Html::a($item['title'], Url::toRoute(['vacancies/index','VacanciesSearch[speciality]' => $item['id'],'speciality'=>$item['id']])),
+                                Html::a($item['title'], Url::toRoute(['vacancies/index','VacanciesSearch[speciality]' => $item['id']])).'<span class="catalogue__item__count">'.$item['count'].'</span>',
                                 ['class' => 'catalogue__item']
                             );
                         },
@@ -42,7 +42,7 @@ $specialitiesLeftSide = array_slice($specialities, count($specialities) / 2 , ce
                         'item' => function($item, $index) {
                             return Html::tag(
                                 'li',
-                                Html::a($item['title'], Url::toRoute(['vacancies/index','VacanciesSearch[speciality]' => $item['id'],'speciality'=>$item['id']])),
+                                Html::a($item['title'], Url::toRoute(['vacancies/index','VacanciesSearch[speciality]' => $item['id']])).'<span class="catalogue__item__count">'.$item['count'].'</span>',
                                 ['class' => 'catalogue__item']
                             );
                         },

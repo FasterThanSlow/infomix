@@ -19,7 +19,7 @@ use app\models\SpecialitiesSection;
 /**
  * VacanciesController implements the CRUD actions for Vacancies model.
  */
-class VacanciesController extends Controller
+class VacanciesController extends AppController
 {
     /**
      * @inheritdoc
@@ -40,14 +40,13 @@ class VacanciesController extends Controller
      * Lists all Vacancies models.
      * @return mixed
      */
-    public function actionIndex($speciality)
+    public function actionIndex()
     {
         $searchModel = new VacanciesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
-        $specialitiesSubsections = \app\models\SpecialitiesSubsection::find()->joinWith('specialities',false)->joinWith('specialitiesSection')->where(['specialities.id' => $speciality])->asArray()->all();
-        $speciality = \app\models\Specialities::findOne(['id'=>$speciality]);
-        
+        $specialitiesSubsections = \app\models\SpecialitiesSubsection::find()->joinWith('specialities',false)->joinWith('specialitiesSection')->where(['specialities.id' => $searchModel->speciality])->asArray()->all();
+        $speciality = \app\models\Specialities::findOne(['id'=>$searchModel->speciality]);
         
         $salariesArr = [
             300 => 'От 300 руб.',
@@ -57,7 +56,7 @@ class VacanciesController extends Controller
             'null' => 'Не указана',
         ];
         
-        $salaries = [];
+        $salariesArr2 = [];
         
         foreach ($salariesArr as $index => $item){
             if($index == 'null'){
@@ -68,22 +67,57 @@ class VacanciesController extends Controller
             }
             
             if($count != 0){
-                $salaries[] = [
+                $salariesArr2[] = [
                     'title' => $item, 
                     'id' => $index, 
                     'count' => $count
                 ];
             }
-            
-            
         }
         
-        $schedule = Schedule::find()->select(['schedule.id','schedule.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('schedule.id')->asArray()->all();
-        $education = Education::find()->select(['education.id','education.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('education.id')->asArray()->all();
-        $employment = Employment::find()->select(['employment.id','employment.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('employment.id')->asArray()->all();
-        $natureOfWork  = NatureOfWork::find()->select(['nature_of_work.id','nature_of_work.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('nature_of_work.id')->asArray()->all();
-        $expiriencies  = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
-        $student = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
+        $scheduleArr = Schedule::find()->select(['schedule.id','schedule.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('schedule.id')->asArray()->all();
+        $educationArr = Education::find()->select(['education.id','education.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('education.id')->asArray()->all();
+        $employmentArr = Employment::find()->select(['employment.id','employment.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('employment.id')->asArray()->all();
+        $natureOfWorkArr  = NatureOfWork::find()->select(['nature_of_work.id','nature_of_work.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('nature_of_work.id')->asArray()->all();
+        $expirienciesArr  = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
+        $studentArr = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
+        
+        
+        $salaries = [];
+        $schedule = [];
+        $education = [];
+        $employment = [];
+        $natureOfWork = [];
+        $expiriencies = [];
+        $student = [];
+        
+        foreach ($salariesArr2 as $key => $value){
+            $salaries[$value['id']] = $value;
+        }
+       
+        foreach ($scheduleArr as $key => $value){
+            $schedule[$value['id']] = $value;
+        }
+        
+       foreach ($educationArr as $key => $value){
+            $education[$value['id']] = $value;
+        }
+        
+        foreach ($employmentArr as $key => $value){
+            $employment[$value['id']] = $value;
+        }
+        
+        foreach ($natureOfWorkArr as $key => $value){
+            $natureOfWork[$value['id']] = $value;
+        }
+        
+        foreach ($expirienciesArr as $key => $value){
+            $expiriencies[$value['id']] = $value;
+        }
+        
+        foreach ($studentArr as $key => $value){
+            $student[$value['id']] = $value;
+        }
         
         return $this->render('index', compact([
             'searchModel',
@@ -100,8 +134,27 @@ class VacanciesController extends Controller
     }
 
     public function actionSpecialitiesSection(){
-       $specialitiesSections = SpecialitiesSection::find()->joinWith('specialitiesSubsections')->asArray()->all();
+       $specialitiesSections = SpecialitiesSection::find()->asArray()->all();
        
+       $specialitiesSubsections = \app\models\SpecialitiesSubsection::find()
+               ->select(['`specialities_subsection`.`id`','`specialities_subsection`.`title`','specialities_section.id as section_id','COUNT(vacancies.id) AS count'])
+               ->joinWith('specialities',false)
+               ->joinWith('specialitiesSection',false)
+               ->leftJoin('vacancies_has_specialities','`specialities`.`id` = `vacancies_has_specialities`.`specialities_id`')
+               ->leftJoin('vacancies','`vacancies_has_specialities`.`vacancies_id` = `vacancies`.`id`')
+               ->groupBy('specialities_subsection.id')
+               ->asArray()
+               ->all();
+       
+       foreach ($specialitiesSections as &$section){
+            $section['specialitiesSubsections'] = [];
+           foreach ($specialitiesSubsections as $subsection){
+              
+               if(isset($section['id']) && $section['id'] == $subsection['section_id']){
+                    $section['specialitiesSubsections'][] = $subsection;
+               }
+           }
+       }
        return $this->render('specialities_sections',[
            'specialitiesSections' => $specialitiesSections
        ]);
@@ -110,11 +163,17 @@ class VacanciesController extends Controller
     public function actionSpecialities($section){
        $specialitySection = \app\models\SpecialitiesSubsection::findOne($section);
        
-       $specialities = \app\models\Specialities::find()->joinWith('specialitiesSubsections')->where(['specialities_subsection.id'=>$section])->asArray()->all();
+       $specialities = \app\models\Specialities::find()->select(['specialities.id','specialities.title','COUNT(vacancies.id) as count'])->joinWith('specialitiesSubsections',false)->joinWith('vacancies',false)->where(['specialities_subsection.id'=>$section])->groupBy('specialities.id')->asArray()->all();
+       
        return $this->render('specialities',[
            'section' => $specialitySection,
            'specialities' => $specialities
        ]);
+    }
+    
+    public function actionMap($speciality){
+        $vacancies = Vacancies::find()->joinWith('specialities')->where(['specialities.id' => $speciality])->all();
+        return $this->render('map', compact('vacancies'));
     }
     
     /**
