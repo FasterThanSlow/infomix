@@ -171,8 +171,11 @@ class VacanciesController extends AppController
        ]);
     }
     
-    public function actionMap($speciality){
-        $vacancies = Vacancies::find()->joinWith('specialities')->where(['specialities.id' => $speciality])->all();
+    public function actionMap(){
+        if(isset($_REQUEST['speciality']))
+            $vacancies = Vacancies::find()->joinWith('specialities')->where(['specialities.id' => $_REQUEST['speciality']])->all();
+        else
+            $vacancies = Vacancies::find()->all();
         return $this->render('map', compact('vacancies'));
     }
     

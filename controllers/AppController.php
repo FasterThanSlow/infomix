@@ -48,6 +48,13 @@ function change_key($key,$new_key,&$arr,$rewrite=true){
         return false;
 }
 
+function getParsedParamsWithUrl($action){
+    
+    $parts = parse_url($url);
+    parse_str($parts['query'], $query);
+    echo $query['email'];
+}
+
 
 function unparse_url($parsed_url) {
     $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';

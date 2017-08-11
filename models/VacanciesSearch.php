@@ -111,7 +111,7 @@ class VacanciesSearch extends Vacancies
         if(!empty($this->salaries)){
             switch ($this->salaries){
                 case 'null':
-                    $query->andFilterWhere(['vacancies.salary' => null]);
+                    $query->andWhere(['vacancies.salary' => null]);
                     break;
                 default :
                     $query->andFilterWhere(['>=' , 'vacancies.salary' ,$this->salaries]);

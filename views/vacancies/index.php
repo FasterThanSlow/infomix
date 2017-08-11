@@ -80,15 +80,19 @@ if ($searchModel->period != '') {
             </div>
             <div class="search_greed_col2">
                 <div style="display: block">
-                    <div class="head_catalog">    
-                        <h2 style="margin-top: 0; margin-bottom: 20px;"><?= $speciality->title ?></h2>
+                    <div class="head_catalog">  
+                        <?php if(!empty($speciality)): ?>
+                            <h2 style="margin-top: 0; margin-bottom: 20px;"><?= $speciality->title ?></h2>
+                        <?php endif; ?>
                         <a href="<?= yii\helpers\Url::toRoute('vacancies/specialities-section'); ?>" >Каталог вакансий</a>
-<?php foreach ($specialitiesSubsections as $subSection): ?>
+                            <?php if(!empty($specialitiesSubsections)): ?>
+                            <?php foreach ($specialitiesSubsections as $subSection): ?>
                             <p style="margin: 15px 0 15px 0">
                                 <span>→ <?= $subSection['specialitiesSection']['title']; ?></span> → 
                                 <a href="<?= Url::toRoute(['vacancies/specialities', 'section' => $subSection['id']]); ?>"><?= $subSection['title']; ?></a>
                             </p>
-<?php endforeach; ?>
+                            <?php endforeach; ?>
+                            <?php endif; ?>
                         <div>
                             <div class="search-list__count">
                                 Найдено: 
@@ -154,9 +158,15 @@ if ($searchModel->period != '') {
                                     </ul>
                                 </div>
                             </span>
+                            <?php if(!empty($speciality)): ?>
                             <div class="pull-right">
                                 <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map','speciality' => $speciality->id]) ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
                             </div>
+                            <?php else: ?>
+                            <div class="pull-right">
+                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map']) ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
+                            </div>
+                            <?php endif; ?>
                         </div>
                        
                         <div class="search-list__top-separator"></div>

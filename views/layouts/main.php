@@ -66,7 +66,11 @@ AppAsset::register($this);
         <div class='clearfix iner-wrap'>
             <div class=" head-bot clearfix">
                 <div class="head-inner">
-                    <a href='#'><img src="../img/logo.png" /></a>
+                    <?php if ((Yii::$app->controller->id != 'site') && (Yii::$app->controller->action->id != 'index')): ?>
+                        <a href='<?= \yii\helpers\Url::to(Yii::$app->homeUrl)?>'><img src="../img/logo.png" /></a>
+                    <?php else: ?>
+                        <img style="width:100%;height: 100%;" src="<?= Yii::$app->request->BaseUrl; ?>/img/logo.png" />
+                    <?php endif; ?>
                 </div>
                 <div class='top-right'>
                     <div id='logintop' class="head-inner">
@@ -220,11 +224,7 @@ AppAsset::register($this);
                 <?php echo Nav::widget([
                     'options' => ['class' => 'menu'],
                     'items' => [
-                        ['label' => 'Главная', 'url' => ['/site/index']],
-                        ['label' => 'Резюме(admin)', 'url' => ['/summary/index']],
-                        ['label' => 'Организации(admin)', 'url' => ['/organizations/index']],
-                        ['label' => 'Вакансии(admin)', 'url' => ['/vacancies2/index']],
-                        ['label' => 'Пользователи(admin)', 'url' => ['/user/index']],
+                        ['label' => 'Главная', 'url' => ['/']],
                         ['label' => 'Вакансии', 'url' => ['/vacancies/specialities-section']],
                     ],
                 ]); ?>

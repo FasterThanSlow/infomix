@@ -61,7 +61,9 @@ class SiteController extends AppController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $countVacancies = \app\models\Vacancies::find()->count();
+        $countSummaries= \app\models\Summary::find()->count();
+        return $this->render('index', compact('countVacancies','countSummaries'));
     }
 
     /**
