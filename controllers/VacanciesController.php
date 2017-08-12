@@ -48,78 +48,15 @@ class VacanciesController extends AppController
         $specialitiesSubsections = \app\models\SpecialitiesSubsection::find()->joinWith('specialities',false)->joinWith('specialitiesSection')->where(['specialities.id' => $searchModel->speciality])->asArray()->all();
         $speciality = \app\models\Specialities::findOne(['id'=>$searchModel->speciality]);
         
-        $salariesArr = [
-            300 => 'От 300 руб.',
-            500 => 'От 500 руб.',
-            700 => 'От 700 руб.',
-            1200 => 'От 1200 руб.',
-            'null' => 'Не указана',
-        ];
-        
-        $salariesArr2 = [];
-        
-        foreach ($salariesArr as $index => $item){
-            if($index == 'null'){
-                $count = Vacancies::find()->where(['is','salary', NULL ])->asArray()->count();
-            }
-            else{
-                $count = Vacancies::find()->where(['>=','salary', $index ])->asArray()->count();
-            }
-            
-            if($count != 0){
-                $salariesArr2[] = [
-                    'title' => $item, 
-                    'id' => $index, 
-                    'count' => $count
-                ];
-            }
-        }
-        
-        $scheduleArr = Schedule::find()->select(['schedule.id','schedule.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('schedule.id')->asArray()->all();
-        $educationArr = Education::find()->select(['education.id','education.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('education.id')->asArray()->all();
-        $employmentArr = Employment::find()->select(['employment.id','employment.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('employment.id')->asArray()->all();
-        $natureOfWorkArr  = NatureOfWork::find()->select(['nature_of_work.id','nature_of_work.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('nature_of_work.id')->asArray()->all();
-        $expirienciesArr  = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
-        $studentArr = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
-        
-        
-        $salaries = [];
-        $schedule = [];
-        $education = [];
-        $employment = [];
-        $natureOfWork = [];
-        $expiriencies = [];
-        $student = [];
-        
-        foreach ($salariesArr2 as $key => $value){
-            $salaries[$value['id']] = $value;
-        }
-       
-        foreach ($scheduleArr as $key => $value){
-            $schedule[$value['id']] = $value;
-        }
-        
-       foreach ($educationArr as $key => $value){
-            $education[$value['id']] = $value;
-        }
-        
-        foreach ($employmentArr as $key => $value){
-            $employment[$value['id']] = $value;
-        }
-        
-        foreach ($natureOfWorkArr as $key => $value){
-            $natureOfWork[$value['id']] = $value;
-        }
-        
-        foreach ($expirienciesArr as $key => $value){
-            $expiriencies[$value['id']] = $value;
-        }
-        
-        foreach ($studentArr as $key => $value){
-            $student[$value['id']] = $value;
-        }
-        
-        return $this->render('index', compact([
+        $salaries = self::getSalariesArr();
+        $schedule = self::getSchedulesArr();
+        $education = self::getEducationArr();
+        $employment = self::getEmployments();
+        $natureOfWork = self::getNaturesOfWork();
+        $expiriencies = self::getExpiriencies();
+        $student = self::getStudents();
+                
+        return $this->render('index', compact(
             'searchModel',
             'dataProvider',
             'schedule',
@@ -130,9 +67,69 @@ class VacanciesController extends AppController
             'student',
             'salaries',
             'speciality',
-            'specialitiesSubsections']));          
+            'specialitiesSubsections'));          
+    }
+    
+    public static function getSalariesArr(){
+        $salaries = [
+            300 => 'От 300 руб.',
+            500 => 'От 500 руб.',
+            700 => 'От 700 руб.',
+            1200 => 'От 1200 руб.',
+            'null' => 'Не указана',
+        ];
+        $result = [];
+        
+        foreach ($salaries as $index => $item){
+            if($index == 'null'){
+                $count = Vacancies::find()->where(['is','salary', NULL ])->asArray()->count();
+            }
+            else{
+                $count = Vacancies::find()->where(['>=','salary', $index ])->asArray()->count();
+            }
+            $result[] = ['title' => $item, 'id' => $index, 'count' => $count];
+        }
+        return self::getFormattedProperty($result);
+    }
+    
+    public static function getSchedulesArr(){
+        $result = Schedule::find()->select(['schedule.id','schedule.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('schedule.id')->asArray()->all();
+        return self::getFormattedProperty($result);
+    }
+    
+    public static function getEducationArr(){
+        $result = Education::find()->select(['education.id','education.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('education.id')->asArray()->all();
+        return self::getFormattedProperty($result);
     }
 
+    public static function getNaturesOfWork(){
+        $result  = NatureOfWork::find()->select(['nature_of_work.id','nature_of_work.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('nature_of_work.id')->asArray()->all();
+        return self::getFormattedProperty($result);
+    }
+    
+    public static function getEmployments(){
+        $result = Employment::find()->select(['employment.id','employment.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('employment.id')->asArray()->all();
+        return self::getFormattedProperty($result);
+    }
+
+    public static function getExpiriencies(){
+        $result = Expiriencies::find()->select(['expiriencies.id','expiriencies.title','COUNT(vacancies.id) as count'])->joinWith('vacancies',false)->groupBy('expiriencies.id')->asArray()->all();
+        return self::getFormattedProperty($result);
+    }
+    
+    public static function getStudents(){
+        $result = Vacancies::find()->select(['COUNT(is_for_student) as count','is_for_student as id',"IF (is_for_student = 1,'Можно','Нет') as title"])->groupBy('vacancies.is_for_student')->asArray()->all();
+        return self::getFormattedProperty($result);
+    }
+
+    private static function getFormattedProperty($property){
+        $result = [];
+        foreach ($property as $key => $value){
+            $result[$value['id']] = $value;
+        }
+        return $result;
+    }
+    
     public function actionSpecialitiesSection(){
        $specialitiesSections = SpecialitiesSection::find()->asArray()->all();
        
@@ -172,10 +169,11 @@ class VacanciesController extends AppController
     }
     
     public function actionMap(){
-        if(isset($_REQUEST['speciality']))
-            $vacancies = Vacancies::find()->joinWith('specialities')->where(['specialities.id' => $_REQUEST['speciality']])->all();
-        else
-            $vacancies = Vacancies::find()->all();
+        $searchModel = new VacanciesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+       
+        $vacancies = $dataProvider->getModels();
+        
         return $this->render('map', compact('vacancies'));
     }
     

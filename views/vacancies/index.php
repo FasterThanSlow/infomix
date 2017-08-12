@@ -160,11 +160,11 @@ if ($searchModel->period != '') {
                             </span>
                             <?php if(!empty($speciality)): ?>
                             <div class="pull-right">
-                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map','speciality' => $speciality->id]) ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
+                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map']) ?>?<?= $_SERVER['QUERY_STRING']; ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
                             </div>
                             <?php else: ?>
                             <div class="pull-right">
-                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map']) ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
+                                <a href="<?= yii\helpers\Url::toRoute(['/vacancies/map']) ?>?<?= $_SERVER['QUERY_STRING']; ?>" class="search-map-link search-map-link-category search-map-link-catalogue link_icon"><i class="pri-pin"></i><span class="text">Показать на карте</span></a>
                             </div>
                             <?php endif; ?>
                         </div>

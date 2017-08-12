@@ -63,6 +63,30 @@ class SiteController extends AppController
     {
         $countVacancies = \app\models\Vacancies::find()->count();
         $countSummaries= \app\models\Summary::find()->count();
+        
+        if(isset($_REQUEST['searchType']) && $_REQUEST['searchType'] == 'vacancies'){
+            $searchModel = new \app\models\VacanciesSearch();
+            $salaries = VacanciesController::getSalariesArr();
+            $schedule = VacanciesController::getSchedulesArr();
+            $education = VacanciesController::getEducationArr();
+            $employment = VacanciesController::getEmployments();
+            $natureOfWork = VacanciesController::getNaturesOfWork();
+            $expiriencies = VacanciesController::getExpiriencies();
+            $student = VacanciesController::getStudents();
+            
+            return $this->render('index', compact(
+                'searchModel',
+                'countVacancies',
+                'countSummaries',
+                'salaries',
+                'schedule',
+                'education',
+                'employment',
+                'natureOfWork',
+                'expiriencies',
+                'student'));
+        }
+        
         return $this->render('index', compact('countVacancies','countSummaries'));
     }
 

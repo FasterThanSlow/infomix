@@ -2304,3 +2304,40 @@ h1.no-margin-top{
 .filter-title{
     display: inline;
 }
+
+.checkbox-inline{
+    margin-right: 20px;
+    padding-right: 10px;
+    padding-left: 0px;
+    margin-left: 0px;
+    z-index: 1000;
+}
+
+.checkbox-inline label{
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.checkbox-inline input{
+    cursor: pointer;
+}
+
+.radio-inline{
+    margin-right: 20px;
+    padding-right: 10px;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+
+.radio-inline label{
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.radio-inline input{
+    cursor: pointer;
+}
+
+.search-group{
+    margin-left: 20px;
+}

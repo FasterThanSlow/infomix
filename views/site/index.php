@@ -50,11 +50,12 @@ $this->title = 'My Yii Application';
                         </div>
                         <div class="sup_form">
                                 <?php if (isset($_REQUEST['searchType']) && $_REQUEST['searchType'] == 'vacancies'): ?>
-                                <div class="param_unvis" data-toggle="modal" style="height: inherit;width: 12%;white-space: nowrap;text-align: center;outline: 0;font-size: 100%;vertical-align: middle;border-right: 1px solid #5F9EA0;float: left; position: relative;line-height: 44px;">
+                                        <div class="param_unvis" style="height: inherit;width: 12%;white-space: nowrap;text-align: center;outline: 0;font-size: 100%;vertical-align: middle;border-right: 1px solid #5F9EA0;float: left; position: relative;line-height: 44px;">
+                                        <div><button data-toggle="modal" data-target="#modalVacancies" class="param_btn" onclick="return false;"><i class="icon-sliders"></i>Параметры</button></div>
                                     <?php else: ?>
-                                    <div class="param_unvis" data-toggle="modal" style="height: inherit;width: 16%;white-space: nowrap;text-align: center;outline: 0;font-size: 100%;vertical-align: middle;border-right: 1px solid #5F9EA0;float: left; position: relative;line-height: 44px;">
+                                        <div class="param_unvis" style="height: inherit;width: 16%;white-space: nowrap;text-align: center;outline: 0;font-size: 100%;vertical-align: middle;border-right: 1px solid #5F9EA0;float: left; position: relative;line-height: 44px;">
+                                        <div><button data-toggle="modal" data-target="#modalSummaries" class="param_btn" onclick="return false;"><i class="icon-sliders"></i>Параметры</button></div>
                                     <?php endif; ?>
-                                    <div><button class="param_btn"><i class="icon-sliders"></i>Параметры</button></div>
                                 </div>
                                     <?php if (isset($_REQUEST['searchType']) && $_REQUEST['searchType'] == 'vacancies'): ?>
                                     <div class="loc_unvis" style="width: 4%; height: 44px; white-space: nowrap;text-align: center;outline: 0;font-size: 1.0em;border-right: 1px solid #5F9EA0;float: left; position: relative;">
@@ -91,3 +92,34 @@ $this->title = 'My Yii Application';
             </div>
         </div>
     </div>
+    
+<div id="modalSummaries" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Расширенный поиск резюме</h4>
+          </div>
+          <div class="modal-body">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Найти</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+<?php if (isset($_REQUEST['searchType']) && $_REQUEST['searchType'] == 'vacancies'): ?>
+   <?= $this->render('_search_vacancies', compact(
+        'searchModel',
+        'schedule',
+        'education',
+        'employment',
+        'natureOfWork',
+        'expiriencies',
+        'student',
+        'salaries'));
+    ?>
+<?php endif;?>

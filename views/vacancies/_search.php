@@ -26,20 +26,44 @@ $template = function ($index, $label, $name, $checked, $value){
         </div>
         <?php endif; ?>
         <?php if(!empty($model->schedules)):?>
+        <?php if(!is_array($model->schedules)): ?>
         <div class="value">
             <?= $schedule[$model->schedules]['title']; ?> график <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5Bschedules%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
         </div>
+        <?php else: ?>
+        <?php foreach ($model->schedules as $item):?>
+        <div class="value">
+            <?= $schedule[$item]['title']; ?> график <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5Bschedules%5D%5B'. key($_REQUEST['VacanciesSearch']['schedules']).'%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </div>
+        <?php next($_REQUEST['VacanciesSearch']['schedules']); endforeach; ?>
+        <?php endif; ?>
         <?php endif; ?>
         <?php if(!empty($model->employments)):?>
+        <?php if(!is_array($model->employments)):?>
         <div class="value">
             <?= $employment[$model->employments]['title']; ?> занятость <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5Bemployments%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
         </div>
+        <?php else: ?>
+        <?php foreach ($model->employments as $item):?>
+         <div class="value">
+            <?= $employment[$item]['title']; ?> занятость <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5Bemployments%5D%5B'.key($_REQUEST['VacanciesSearch']['employments']).'%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </div>
+        <?php next($_REQUEST['VacanciesSearch']['employments']); endforeach; ?>
+        <?php endif; ?>
         <?php endif; ?>
         <?php if(!empty($model->natureOfWorks)):?>
+        <?php if(!is_array($model->natureOfWorks)): ?>
         <div class="value">
             <?= $natureOfWork[$model->natureOfWorks]['title']; ?> <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5BnatureOfWorks%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
         </div>
+        <?php else: ?>
+        <?php $cnt=0; foreach ($model->natureOfWorks as $item):?>
+        <div class="value">
+            <?= $natureOfWork[$item]['title']; ?> <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5BnatureOfWorks%5D%5B'.key($_REQUEST['VacanciesSearch']['natureOfWorks']).'%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </div>
+        <?php next($_REQUEST['VacanciesSearch']['natureOfWorks']); endforeach; ?>
         <?php endif; ?>
+        <?php endif;?>
         <?php if(!empty($model->educations)):?>
         <div class="value">
             <?= $education[$model->educations]['title']; ?> <a href="<?= controllers\removeFromUrl(yii\helpers\Url::current(), 'VacanciesSearch%5Beducations%5D')?>"><i class="fa fa-times" aria-hidden="true"></i></a>
