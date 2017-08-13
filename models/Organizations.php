@@ -54,13 +54,13 @@ class Organizations extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'institutional_legal_form' => 'Institutional Legal Form',
-            'title' => 'Title',
-            'unp' => 'Unp',
-            'legal_address' => 'Legal Address',
-            'cities_id' => 'Cities ID',
-            'pictures_id' => 'Pictures ID',
+            'id' => 'Идентификатор',
+            'institutional_legal_form' => 'Организационно-правовая форма',
+            'title' => 'Название',
+            'unp' => 'УНП',
+            'legal_address' => 'Юридический адрес',
+            'cities_id' => 'Город',
+            'pictures_id' => 'Изображение',
         ];
     }
 

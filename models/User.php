@@ -63,19 +63,19 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Идентификатор',
             'email' => 'Email',
-            'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
-            'password_reset_token' => 'Password Reset Token',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'first_name' => 'First Name',
-            'middle_name' => 'Middle Name',
-            'last_name' => 'Last Name',
-            'user_type_id' => 'User Type ID',
-            'addresses_id' => 'Addresses ID',
+            'auth_key' => 'Ключ авторизации',
+            'password_hash' => 'Захэшированный пароль',
+            'password_reset_token' => 'Токен смены пароля',
+            'status' => 'Статус',
+            'created_at' => 'Создан',
+            'updated_at' => 'Обновлен',
+            'first_name' => 'Имя',
+            'middle_name' => 'Фамилия',
+            'last_name' => 'Отчество',
+            'user_type_id' => 'Тип пользователя',
+            'addresses_id' => 'Адрес',
         ];
     }
 

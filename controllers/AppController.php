@@ -18,9 +18,30 @@ class AppController extends \yii\web\Controller {
     public static function debug($arr) {
         echo '<pre>' . print_r($arr, true) . '</pre>';
     }
-   
+    
+    public static function getMainText(){
+        $text = \app\models\MainText::findOne(1);
+        return $text->title;
+    }
+    
+    public static function getMainMenu(){
+        $menu = \app\models\MainMenu::find()->orderBy(['position'=>SORT_ASC])->all();
+        $menuArr = [];
+        foreach ($menu as $item){
+            $menuArr[] = [
+                'label' => $item->title,
+                'url' => [$item->link],
+            ];
+        };
+        return $menuArr;
+    }  
 }
 
+function getMainText(){
+    $text = \app\models\MainText::findOne(1);
+    return $text->title;
+}
+    
 function debug($arr) {
     echo '<pre>' . print_r($arr, true) . '</pre>';
 }

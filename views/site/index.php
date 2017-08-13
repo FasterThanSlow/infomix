@@ -74,7 +74,7 @@ $this->title = 'My Yii Application';
 
                 <div class="ads">
                     <div class="hd">
-                        <h1>Найти работу с INFOMIX</h1>
+                        <h1><?= app\controllers\getMainText(); ?></h1>
                     </div>
                     <div class="num">
                         <h2>Вакансий: <?= $countVacancies; ?></h2>

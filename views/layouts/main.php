@@ -93,10 +93,7 @@ AppAsset::register($this);
             <div class="iner-wrap clearfix">
                 <?php echo Nav::widget([
                     'options' => ['class' => 'menu'],
-                    'items' => [
-                        ['label' => 'Главная', 'url' => ['/']],
-                        ['label' => 'Вакансии', 'url' => ['/vacancies/specialities-section']],
-                    ],
+                    'items' => app\controllers\AppController::getMainMenu(),
                 ]); ?>
             </div>
            

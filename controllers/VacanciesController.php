@@ -71,23 +71,19 @@ class VacanciesController extends AppController
     }
     
     public static function getSalariesArr(){
-        $salaries = [
-            300 => 'От 300 руб.',
-            500 => 'От 500 руб.',
-            700 => 'От 700 руб.',
-            1200 => 'От 1200 руб.',
-            'null' => 'Не указана',
-        ];
+        $salaries = \app\models\PriceFilters::find()->orderBy(['value'=>SORT_DESC])->all();
+        
         $result = [];
         
-        foreach ($salaries as $index => $item){
-            if($index == 'null'){
+        foreach ($salaries as $item){
+            if($item->value == NULL){
+                $item->value = 'null';
                 $count = Vacancies::find()->where(['is','salary', NULL ])->asArray()->count();
             }
             else{
-                $count = Vacancies::find()->where(['>=','salary', $index ])->asArray()->count();
+                $count = Vacancies::find()->where(['>=','salary', $item->value ])->asArray()->count();
             }
-            $result[] = ['title' => $item, 'id' => $index, 'count' => $count];
+            $result[] = ['title' => $item->title, 'id' => $item->value, 'count' => $count];
         }
         return self::getFormattedProperty($result);
     }
