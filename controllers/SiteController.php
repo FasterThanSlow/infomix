@@ -32,7 +32,7 @@ class SiteController extends AppController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                 ],
             ],
         ];
@@ -97,17 +97,23 @@ class SiteController extends AppController
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+        return $this->render('about');
+    }
+    
+    public function actionAjaxLogin() {
+        if (Yii::$app->request->isAjax) {
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->login()) {
+                    return $this->goBack();
+                } else {
+                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+                    return \yii\widgets\ActiveForm::validate($model);
+                }
+            }
+        } else {
+            throw new HttpException(404 ,'Page not found');
         }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**

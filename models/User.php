@@ -29,7 +29,7 @@ use Yii;
  * @property UserHasContacts[] $userHasContacts
  * @property Contacts[] $contacts
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -134,4 +134,36 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Contacts::className(), ['id' => 'contacts_id'])->viaTable('user_has_contacts', ['user_id' => 'id']);
     }
+
+    public function getAuthKey(): string {
+        return $this->auth_key;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function validateAuthKey($authKey): bool {
+        return $this->auth_key === $authKey;
+    }
+
+    public static function findIdentity($id): \yii\web\IdentityInterface {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null): \yii\web\IdentityInterface {
+        return static::findOne(['access_token' => $token]);
+    }
+    
+    public function findByUsername($username){
+        return static::findOne(['email' => $username]);
+    }
+    
+    public function validatePassword($password){
+       return \Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+   public function generateAuthKey(){
+       $this->auth_key = Yii::$app->security->generateRandomString();
+   }
 }

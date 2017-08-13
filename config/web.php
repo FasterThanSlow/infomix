@@ -12,6 +12,12 @@ $config = [
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+            'layout' => 'admin'
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -25,6 +31,11 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+        
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'dateFormat' => 'php:d MMMM yyyy, H:i',

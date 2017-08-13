@@ -32,7 +32,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/script.js',
-        'js/bootstrap.min.js'
+        //'js/bootstrap.min.js'
     ];
     
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD, 'async' => 'async'];
