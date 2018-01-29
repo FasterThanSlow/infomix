@@ -1,13 +1,14 @@
 <?php
 
 use yii\helpers\Url;
-
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+$roles = \Yii::$app->authManager->getRolesByUser(\Yii::$app->user->id);
+$role = array_shift($roles);
 ?>
 <div class="findjob ">
-    <div class="layer ">
+    <div class="layer">
         <div class="iner-wrap">
             <div class="search_box">
                 <form name="search-form" action="<?= Url::toRoute('vacancies/index') ?>" class="search_form">
@@ -72,6 +73,8 @@ $this->title = 'My Yii Application';
                     </div>
                 </form>
 
+            
+            <?php if(Yii::$app->user->isGuest): ?>
                 <div class="ads">
                     <div class="hd">
                         <h1><?= app\controllers\getMainText(); ?></h1>
@@ -89,9 +92,105 @@ $this->title = 'My Yii Application';
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php elseif($role->name == 'Работодатель'):?>
+                <nav class="loginNav">
+	            <div class="ads">    
+                        <ul class="menu">
+                            <li><a href="#">Мои вакансии</a></li>
+                            <li><a href="#">Отклики</a></li>
+                            <li><a href="#">Предложения</a></li>
+                            <li style="float: right;"><a href="#">Моя организация<span class="caret" style="color:white;"></span></a></li>
+                        </ul>
+                        <ul class="menu_unvis">
+                            <li style="background-color: background-color: rgb(35,35,35);">
+                                <a href="#" class="icon-menu" style="padding-left:1px; padding-right:1px;"></a>
+                                <ul class="submenu_unvis">
+                                    <li><a href="#">Мои вакансии</a></li>
+                                    <li><a href="#">Отклики</a></li>
+                                    <li><a href="#">Предложения</a></li>
+                                    <li><a href="#">Статистика</a></li>
+                                    <li><a href="#">Отложенные</a></li>
+                                </ul>
+                                <li style="float: right;"><a href="#">Моя организация<span class="caret" style="color:white;"></span></a></li>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+			    <div class="cabinet">
+			        <div class="loginLeft">
+                    <div class="equates_login">
+                        <div style="m"><img src="img/companies/05f971b5ec196b8c65b75d2ef8267331.jpg" alt="" class="comp_img_login"></div>
+                        <div><span style="font-size: 12px; color: green;">ID клиента: 54609</span></div>
+                        <div style="margin: 15px 0 15px 0;"><a href="#">&laquo;ЧТУП АПРОАВТОТЕХ&raquo;</a></div>
+                        <div><a href="#">Представители</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 100px;"></div><span>1</span></div>
+                        <div><a href="#">Вакансии организации</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 51px;"></div><span>5</span></div>
+                    </div>
+                    </div>
+                    <div class="loginCenter">
+                        <div class="equates_login">
+                            <div class="loginCenter_left">
+                                <div><h4 style="font-weight: 600;">Ваш кабинет</h4></div>
+                                <div style="margin: 15px 0px 15px 0px;"><span style="font-size: 12px; color: green;">Статус: Работодатель</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Опубликованные ваканси</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 109px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Отклики в работе</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 163px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Предложения ожидают ответа</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 80px;"></div><span>0</span></div>
+                                <div><button class="but_create_vak" onclick="location.href='<?= Url::toRoute('vacancy/create') ?>';">Создать вакансию</button></div>
+                            </div>
+                            <div class="loginCenter_right">
+                                <div><h4 style="font-weight: 600;">Вакансии и услуги</h4></div>
+                                <div style="margin-top:10px; margin-bottom: 15px;"><a href="#"><span style="font-weight:800; font-size:20px;">+</span>Добавить</a></div>
+                                <div style="margin-bottom: 10px;"><button class="but_prem">Премиум</button>Осталось<div style="display:inline-block; border-bottom: 2px dotted grey; width: 90px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><button class="but_stand">Стандартная</button>Осталось<div style="display:inline-block; border-bottom: 2px dotted grey; width: 90px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><button class="but_free">Бесплатная</button>Осталось<div style="display:inline-block; border-bottom: 2px dotted grey; width: 90px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 5px; ">Автообновление вакансий<div style="display:inline-block; border-bottom: 2px dotted grey; width: 84px;"></div><span>0</span></div>
+                                <div >Доступ  контактам<div style="display:inline-block; border-bottom: 2px dotted grey; width: 103px;"></div><a href="#">Купить</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <?php elseif($role->name == 'Соискатель'):?>
+                   <nav class="loginNav">
+	            <div class="ads">    
+                        <ul class="menu">
+                            <li><a href="#">Мои резюме</a></li>
+                            <li><a href="#">Отклики</a></li>
+                            <li><a href="#">Предложения</a></li>                        
+                        </ul>
+                        <ul class="menu_unvis">
+                            <li style="background-color: background-color: rgb(35,35,35);">
+                                <a href="#" class="icon-menu" style="padding-left:1px; padding-right:1px;"></a>
+                                <ul class="submenu_unvis">
+                                    <li><a href="#">Мои резюме</a></li>
+                                    <li><a href="#">Отклики</a></li>
+                                    <li><a href="#">Предложения</a></li>     
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+			    <div class="cabinet">
+                    <div class="loginCenter">
+                        <div class="equates_login">
+                            <div class="loginCenter_left">
+                                <div><h4 style="font-weight: 600;">Ваш кабинет</h4></div>
+                                <div style="margin: 15px 0px 15px 0px;"><span style="font-size: 12px; color: green;">Статус: Соискатель</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Опубликованные резюме</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 109px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Предложения о работе</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 163px;"></div><span>0</span></div>
+                                <div style="margin-bottom: 10px;"><a href="#">Отклики ожидают ответа</a><div style="display:inline-block; border-bottom: 2px dotted grey; width: 80px;"></div><span>0</span></div>
+                                <div><button class="but_create_vak" onclick="location.href='<?= Url::toRoute('summary/create') ?>';">Создать резюме</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif;?>
+                </div>
         </div>
     </div>
+    <?php if(isset($_REQUEST['reg']) && $_REQUEST['reg'] == 'true'): 
+        echo "Вы успешно зарегистрированны. Проверьте ваш электронный адрес для активации."
+    ?>
+    
+    <?php endif;?>
     
 <div id="modalSummaries" class="modal fade" role="dialog">
     <div class="modal-dialog">

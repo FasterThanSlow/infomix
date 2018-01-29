@@ -7,12 +7,13 @@ use Yii;
 /**
  * This is the model class for table "cities".
  *
- * @property string $id(11)
+ * @property string $id
  * @property string $title
  *
  * @property Addresses[] $addresses
  * @property Organizations[] $organizations
  * @property Summary[] $summaries
+ * @property Vacancies[] $vacancies
  */
 class Cities extends \yii\db\ActiveRecord
 {
@@ -40,7 +41,7 @@ class Cities extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Id(11)',
+            'id' => 'ID',
             'title' => 'Title',
         ];
     }
@@ -67,5 +68,13 @@ class Cities extends \yii\db\ActiveRecord
     public function getSummaries()
     {
         return $this->hasMany(Summary::className(), ['cities_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVacancies()
+    {
+        return $this->hasMany(Vacancies::className(), ['cities_id' => 'id']);
     }
 }

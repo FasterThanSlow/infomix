@@ -100,6 +100,14 @@ class SiteController extends AppController
         return $this->render('about');
     }
     
+    public function actionEmployerRegister(){
+        return $this->render('employer_register');
+    }
+
+    public function actionApplicantRegister(){
+        
+    }
+    
     public function actionAjaxLogin() {
         if (Yii::$app->request->isAjax) {
             $model = new LoginForm();

@@ -19,9 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <h3>Количество резюме: <?= $countSummaries; ?></h3>
     </div>
     <div class="container-fluid">
-        <h3>Количество работодателей: <?= $countEmployer; ?></h3>
+        <h3>Количество работодателей: <?php//$countEmployer; ?></h3>
     </div>
     <div class="container-fluid">
-        <h3>Количество соискателей: <?= $countCompetitor; ?></h3>
+        <h3>Количество соискателей: <?php// $countCompetitor; ?></h3>
     </div>
 </div>

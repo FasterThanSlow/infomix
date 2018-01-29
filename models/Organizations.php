@@ -43,7 +43,7 @@ class Organizations extends \yii\db\ActiveRecord
             [['unp', 'cities_id', 'pictures_id'], 'integer'],
             [['cities_id', 'pictures_id'], 'required'],
             [['institutional_legal_form', 'title', 'legal_address'], 'string', 'max' => 255],
-            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['cities_id' => 'id(11)']],
+            [['cities_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['cities_id' => 'id']],
             [['pictures_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pictures::className(), 'targetAttribute' => ['pictures_id' => 'id']],
         ];
     }
@@ -54,13 +54,13 @@ class Organizations extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Идентификатор',
-            'institutional_legal_form' => 'Организационно-правовая форма',
-            'title' => 'Название',
-            'unp' => 'УНП',
-            'legal_address' => 'Юридический адрес',
-            'cities_id' => 'Город',
-            'pictures_id' => 'Изображение',
+            'id' => 'ID',
+            'institutional_legal_form' => 'Institutional Legal Form',
+            'title' => 'Title',
+            'unp' => 'Unp',
+            'legal_address' => 'Legal Address',
+            'cities_id' => 'Cities ID',
+            'pictures_id' => 'Pictures ID',
         ];
     }
 

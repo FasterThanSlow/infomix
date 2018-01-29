@@ -4,13 +4,13 @@ namespace app\widgets;
  
 use Yii;
 use yii\base\Widget;
-use app\models\LoginForm;
+use dektrium\user\models\LoginForm;
  
 class LoginFormWidget extends Widget {
  
     public function run() {
         if (Yii::$app->user->isGuest) {
-            $model = new LoginForm();
+            $model = \Yii::createObject(LoginForm::className());
             return $this->render('loginFormWidget', [
                 'model' => $model,
             ]);

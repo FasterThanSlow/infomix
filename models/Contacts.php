@@ -35,10 +35,9 @@ class Contacts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'contact_types_id'], 'required'],
-            [['id', 'contact_types_id'], 'integer'],
+            [['contact_types_id'], 'required'],
+            [['contact_types_id'], 'integer'],
             [['value'], 'string', 'max' => 255],
-            [['id'], 'unique'],
             [['contact_types_id'], 'exist', 'skipOnError' => true, 'targetClass' => ContactTypes::className(), 'targetAttribute' => ['contact_types_id' => 'id']],
         ];
     }

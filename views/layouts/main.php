@@ -75,16 +75,21 @@ AppAsset::register($this);
                     <?php endif; ?>
                 </div>
                 
+                <?php if(Yii::$app->user->isGuest): ?>
                 <div class='top-right'>
                     <div id='logintop' class="head-inner">
                         <i class='icon-users'></i>
-                        <a href='#' style="background: none; border: none; outline: 0; color:#5d4484; line-height: 45px;font-size: 1.4em;" data-toggle="modal" data-target="#login-modal">Вход</a>
-                        <span style="margin-left: 5px;margin-right: 5px;">|</span>
-                        <button style="background: none; border: none; outline: 0;color: #5d4484;line-height: 45px;font-size: 1.4em;" data-toggle="modal" data-target="#myModal">Регистрация</button>
+                        <a href='#' style="background: none; border: none; outline: 0; color:#5d4484; line-height: 45px;font-size: 1.4em;" data-toggle="modal" data-target="#login-modal">Вход и регистрация</a>
                         <?= LoginFormWidget::widget([]); ?>
                     </div>
-    
                 </div>
+                <?php else: ?>
+                <div class='top-right'>
+                    <div id='logintop' class="head-inner">
+                        <a href='<?= \yii\helpers\Url::toRoute('site/logout'); ?>' style="background: none; border: none; outline: 0; color:#5d4484; line-height: 45px;font-size: 1.4em;">Выход ( <?= Yii::$app->user->identity->username; ?> )</a>
+                    </div>
+                </div>
+                <?php endif;?>
             </div>
         </div>
         

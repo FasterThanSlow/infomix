@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use Yii;
 /**
  * Description of AppController
  *
@@ -20,26 +21,63 @@ class AppController extends \yii\web\Controller {
     }
     
     public static function getMainText(){
-        $text = \app\models\MainText::findOne(1);
-        return $text->title;
+        $text = \app\models\MainText::findOne(2);
+        if($text){
+            return $text->title;
+        }
+        else{
+            return "";
+        }
     }
     
+    public static function getContactTypes(){
+        $contacts = \app\models\ContactTypes::find()->all();
+        $contactsArr = [];
+        foreach ($contacts as $contact){
+            $contactsArr[$contact->id] = $contact->title;
+        }
+        return $contactsArr;
+    }
+    
+    public static function getCities(){
+        $cities = \app\models\Cities::find()->all();
+        $citiesArr = [];
+        foreach ($cities as $city){
+            $citiesArr[$city->id] = $city->title;
+        }
+        return $citiesArr;
+    }
+
+
     public static function getMainMenu(){
         $menu = \app\models\MainMenu::find()->orderBy(['position'=>SORT_ASC])->all();
         $menuArr = [];
         foreach ($menu as $item){
             $menuArr[] = [
                 'label' => $item->title,
-                'url' => [$item->link],
+                'url' => \yii\helpers\Url::to($item->link),
             ];
         };
+        if (!Yii::$app->user->isGuest) {
+            if(Yii::$app->user->identity->username == 'admin'){
+                $menuArr[] = [
+                    'label' => "Администраторская часть",
+                    'url' => \yii\helpers\Url::toRoute('admin/default/index'),
+                ];
+            }
+        }
         return $menuArr;
     }  
 }
 
 function getMainText(){
-    $text = \app\models\MainText::findOne(1);
-    return $text->title;
+    $text = \app\models\MainText::findOne(2);
+    if($text){
+        return $text->title;
+    }
+    else{
+        return "";
+    }
 }
     
 function debug($arr) {

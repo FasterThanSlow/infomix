@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::textInput('mainText', app\controllers\AppController::getMainText(), ['class'=>'form-control']); ?>
         </div>
         <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+            <?= Html::submitButton('Обновить', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
         </div>
         <?php $form->end(); ?>
     </div>

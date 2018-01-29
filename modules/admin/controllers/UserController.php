@@ -1,132 +1,20 @@
 <?php
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 namespace app\modules\admin\controllers;
 
-use Yii;
-use app\models\User;
-use app\modules\admin\models\UserSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use dektrium\user\controllers\AdminController as BaseUserAdminController;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * Description of UserController
+ *
+ * @author Валим
  */
-class UserController extends Controller
-{
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single User model.
-     * @param string $id
-     * @param string $user_type_id
-     * @param string $addresses_id
-     * @return mixed
-     */
-    public function actionView($id, $user_type_id, $addresses_id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $user_type_id, $addresses_id),
-        ]);
-    }
-
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'user_type_id' => $model->user_type_id, 'addresses_id' => $model->addresses_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
-     * @param string $user_type_id
-     * @param string $addresses_id
-     * @return mixed
-     */
-    public function actionUpdate($id, $user_type_id, $addresses_id)
-    {
-        $model = $this->findModel($id, $user_type_id, $addresses_id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'user_type_id' => $model->user_type_id, 'addresses_id' => $model->addresses_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @param string $user_type_id
-     * @param string $addresses_id
-     * @return mixed
-     */
-    public function actionDelete($id, $user_type_id, $addresses_id)
-    {
-        $this->findModel($id, $user_type_id, $addresses_id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @param string $user_type_id
-     * @param string $addresses_id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id, $user_type_id, $addresses_id)
-    {
-        if (($model = User::findOne(['id' => $id, 'user_type_id' => $user_type_id, 'addresses_id' => $addresses_id])) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
+class UserController extends BaseUserAdminController{
+    public $layout = '@app/modules/admin/views/layouts/admin';
 }

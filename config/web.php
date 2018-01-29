@@ -13,9 +13,29 @@ $config = [
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'admins' => ['admin'],
+            'controllerMap' => [
+                'admin' => 'app\modules\admin\controllers\UserController',
+                'registration' => 'app\controllers\UserRegistrationController'
+            ],
+            'modelMap' =>[
+                'User' => 'app\models\user\User',
+            ]
+        ],
         'admin' => [
             'class' => 'app\modules\admin\Module',
             'layout' => 'admin'
+        ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\RbacWebModule',
+            'controllerMap' => [
+                'rule' => 'app\modules\admin\controllers\UserRuleController',
+                'assigment' => 'app\modules\admin\controllers\UserAssignmentController',
+                'permission' => 'app\modules\admin\controllers\UserPermissionController',
+                'role' => 'app\modules\admin\controllers\UserRoleController',
+            ],
         ],
     ],
     'components' => [
@@ -24,16 +44,44 @@ $config = [
             'cookieValidationKey' => '7TEfcHYXO4oO8c7HZFg6MwWAmyyFYEX7',
             'baseUrl' => $baseUrl,
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/views/user'
+                ],
+            ],
+        ],
+        'authClientCollection' => [
+            'class'   => \yii\authclient\Collection::className(),
+            'clients' => [
+                'facebook' => [
+                    'class'        => 'dektrium\user\clients\Facebook',
+                    'clientId'     => '1724508714523327',
+                    'clientSecret' => '4ca2cd5f08b0205570723fe3f66b6605',
+                ],
+                'twitter' => [
+                    'class'          => 'dektrium\user\clients\Twitter',
+                    'consumerKey'    => 'fWVA5gW91EsRMl6pwrPgKZckH',
+                    'consumerSecret' => 'mJYrTujpBOQAkRtL71cttTLPS28gVNBiuCIRBfP8i5bvSI2Cwa',
+                ],
+                'google' => [
+                    'class'        => 'dektrium\user\clients\Google',
+                    'clientId'     => '40632274323-rrue04pnjg85f754c9vmnrc09cs93pvb.apps.googleusercontent.com',
+                    'clientSecret' => 'hdtqQdVtYIymqqZ_GVvSOdEf',
+                ],
+                'vkontakte' => [
+                    'class'        => 'dektrium\user\clients\VKontakte',
+                    'clientId'     => '6156152',
+                    'clientSecret' => 'tgrx1xpcCIjjcfufcSzE',
+                ]
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'dektrium\user\models\User',
             'enableAutoLogin' => true,
-        ],
-        
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
         ],
         
         'formatter' => [

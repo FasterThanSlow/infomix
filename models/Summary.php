@@ -98,7 +98,7 @@ class Summary extends \yii\db\ActiveRecord
             [['pictures_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pictures::className(), 'targetAttribute' => ['pictures_id' => 'id']],
             [['relocation_id'], 'exist', 'skipOnError' => true, 'targetClass' => Relocation::className(), 'targetAttribute' => ['relocation_id' => 'id']],
             [['statuses_id'], 'exist', 'skipOnError' => true, 'targetClass' => Statuses::className(), 'targetAttribute' => ['statuses_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => user\User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 

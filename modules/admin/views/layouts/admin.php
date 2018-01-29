@@ -41,7 +41,7 @@ AppAsset::register($this);
         ['label' => 'Вакансии', 'url' => ['/admin/vacancies/index']],
         ['label' => 'Компании', 'url' => ['/admin/organizations/index']],
         ['label' => 'Резюме', 'url' => ['/admin/summary/index']],
-        ['label' => 'Пользователи', 'url' => ['/admin/user/index']],
+        ['label' => 'Пользователи', 'url' => ['/user/admin/index']],
         ['label' => 'Тарифы', 'url' => ['/admin/default/tariff']],
         ['label' => 'Баннеры', 'url' => ['/admin/default/banners']],
         ['label' => 'Фильтры', 'url' => ['/admin/price-filters/index']],
@@ -53,7 +53,7 @@ AppAsset::register($this);
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'get')
             . Html::submitButton(
-                'Выход (' . Yii::$app->user->identity->email . ')',
+                'Выход (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

@@ -39,12 +39,12 @@
 $(document).ready(function(){
  //Чекбокс 
    $("#radio2").click(function(){
-      $("#hiddenInput").hide(500);
+    $("#hiddenInput").hide(500,function(){$("#hiddenInput").find('input').val('Предприниматель');});
     $('#compname').attr('readonly','readonly');
    });
    $("#radio1").click(function(){
-       $('#compname').removeAttr("readonly");
-
+      $('#compname').removeAttr("readonly");
+      $("#hiddenInput").find('input').val('');
       $("#hiddenInput").show(500);
    });
     

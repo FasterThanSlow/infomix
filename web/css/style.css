@@ -2382,3 +2382,15 @@ h1.no-margin-top{
 .wrap > .container {
     padding: 70px 15px 20px;
 }
+
+.help-block{
+    position: absolute;
+}
+
+.input-dop{
+    margin-left: 15px;
+}
+
+.ochoices{
+    width:660px;
+}

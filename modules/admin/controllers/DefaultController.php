@@ -16,9 +16,17 @@ class DefaultController extends AppAdminController
     {
         $post = Yii::$app->request->post();
         if(!empty($post['mainText'])){
-            $text = \app\models\MainText::findOne(1);
-            $text->title = $post['mainText'];
-            $text->save();
+            $text = \app\models\MainText::findOne(2);
+            
+            if(!$text){
+                $text = new \app\models\MainText();
+                $text->title = $post['mainText'];
+                $text->save();
+            }
+            else{
+                $text->title = $post['mainText'];
+                $text->save();
+            }
         }
         
         $dataProvider = new ActiveDataProvider([
@@ -31,8 +39,8 @@ class DefaultController extends AppAdminController
     public function actionStatistics(){
         $countVacancies = \app\models\Vacancies::find()->count();
         $countSummaries = \app\models\Summary::find()->count();
-        $countCompetitor = \app\models\User::find()->joinWith('userType')->where(['user_type.id' => 2])->count();
-        $countEmployer = \app\models\User::find()->joinWith('userType')->where(['user_type.id' => 1])->count();
+        //$countCompetitor = \app\models\User::find()->joinWith('userType')->where(['user_type.id' => 2])->count();
+        //$countEmployer = \app\models\User::find()->joinWith('userType')->where(['user_type.id' => 1])->count();
         return $this->render('statistics', compact(
                 'countVacancies',
                 'countSummaries',

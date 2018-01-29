@@ -30,15 +30,15 @@ Modal::end();
                             'validateOnBlur' => false,
                             'validateOnChange' => false,
                             'validateOnType' => false,
-                            'action' => ['site/ajax-login'],
+                            'action' => ['/user/login'],
                             
                         ]); ?>
                                                 
                         <div>
                             <dl>
-                                <dt>E-mail <span class="red-star">*</span>  <span id="praca-login-help-email" class="help-icon" data-original-title="" title=""></span></dt>
+                                <dt>Логин <span class="red-star">*</span>  <span id="praca-login-help-email" class="help-icon" data-original-title="" title=""></span></dt>
                                 <dd>
-                                    <?= $form->field($model, 'email')->textInput(['class'=>'form-etc account-area auth__text-input'])->label(false); ?>
+                                    <?= $form->field($model, 'login')->textInput(['class'=>'form-etc account-area auth__text-input'])->label(false); ?>
                                 </dd>
                                 <dt>Пароль <span class="red-star">*</span>  <span id="praca-login-help-password" class="help-icon" data-original-title="" title=""></span></dt>
                                 <dd>
@@ -52,13 +52,13 @@ Modal::end();
                                             <?= $form->field($model, 'rememberMe')->checkbox([
                                                 'class'=>'ui-checkboxradio ui-helper-hidden-accessible',
                                                 'id'=>'js-advanced-checkbox-58b687df2a428',
-                                                'template' => '{input} запомнить меня',
+                                                'template' => '{input} <p style="display:inline">запомнить меня</p>',
                                             ])->label(false); ?>
                                         </div>
                                         <span id="praca-login-help-remember" class="help-icon" data-original-title="" title=""></span>
                                     </label> 
                                 </dd>
-                                   <?= Html::submitInput('Войти', ['class' => 'btn btn_green', 'name' => 'login-button']); ?><a class="forget-password" style='margin-left: 5px;' href="#" tabindex="-1">Забыли пароль?</a> </dd>
+                                   <?= Html::submitInput('Войти', ['class' => 'btn btn_green', 'name' => 'login-button']); ?><a class="forget-password" style='margin-left: 5px;' href="<?= yii\helpers\Url::toRoute('user/recovery/request')?>" tabindex="-1">Забыли пароль?</a> </dd>
                             </dl>
                         </div>
                                                 
@@ -67,11 +67,10 @@ Modal::end();
                         <div class="social-binding social-binding_login">
                             <p class="social-binding__note social-binding__note_login">Вход через социальную сеть</p>
                             <ul class="social-binding__list clearfix">
-                                <li class="social-binding__item"><a class="social-icon social-icon_google-plus" href="https://praca.by/social-auth/Google/"><i class="mdi mdi-google-plus"></i></a></li>
-                                <li class="social-binding__item"><a class="social-icon social-icon_facebook" href="https://praca.by/social-auth/Facebook/"><i class="mdi mdi-facebook"></i></a></li>
-                                <li class="social-binding__item"><a class="social-icon social-icon_twitter" href="https://praca.by/social-auth/Twitter/"><i class="mdi mdi-twitter"></i></a></li>
-                                <li class="social-binding__item"><a class="social-icon social-icon_vk" href="https://praca.by/social-auth/Vkontakte/"><i class="mdi mdi-vk"></i></a></li>
-                                <li class="social-binding__item"><a class="social-icon social-icon_odnoklassniki" href="https://praca.by/social-auth/Odnoklassniki/"><i class="mdi mdi-odnoklassniki"></i></a></li>
+                                <li class="social-binding__item"><a class="social-icon social-icon_google-plus" href="<?= yii\helpers\Url::to(['/user/security/auth','authclient'=>'google'])?>"><i class="mdi mdi-google-plus"></i></a></li>
+                                <li class="social-binding__item"><a class="social-icon social-icon_facebook" href="<?= yii\helpers\Url::to(['/user/security/auth','authclient'=>'facebook'])?>"><i class="mdi mdi-facebook"></i></a></li>
+                                <li class="social-binding__item"><a class="social-icon social-icon_twitter" href="<?= yii\helpers\Url::to(['/user/security/auth','authclient'=>'twitter'])?>"><i class="mdi mdi-twitter"></i></a></li>
+                                <li class="social-binding__item"><a class="social-icon social-icon_vk" href="<?= yii\helpers\Url::to(['/user/security/auth','authclient'=>'vkontakte'])?>"><i class="mdi mdi-vk"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -83,7 +82,7 @@ Modal::end();
                                 <p class="reg-invite__description">
                                     <noindex>Зарегистрировавшись, соискатели могут размещать резюме и откликаться на заинтересовавшие их вакансии.</noindex>
                                 </p>
-                                <a href="#" class="btn btn_green">Регистрация соискателя</a>
+                                <a href="<?= \yii\helpers\Url::toRoute(['/user/registration/register','type'=>'applicant'])?>" class="btn btn_green">Регистрация соискателя</a>
                             </div>
 
                             <div class="reg-invite__wrapper">
@@ -91,7 +90,7 @@ Modal::end();
                                 <p class="reg-invite__description">
                                     <noindex>Зарегистрировавшись, работодатели могут размещать свои&nbsp;вакансии.</noindex>
                                 </p>
-                                <a href="#" class="btn btn_orange">Регистрация работодателя</a>
+                                <a href="<?= \yii\helpers\Url::toRoute(['/user/registration/register','type'=>'employer'])?>" class="btn btn_orange">Регистрация работодателя</a>
                             </div>
                         </div>
                     </div>
